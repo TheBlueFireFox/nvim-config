@@ -1,33 +1,58 @@
 require('packer').startup(function(use)
-        use "rebelot/kanagawa.nvim"
-        use 'wbthomason/packer.nvim' -- Package manager
+        -- Package manager
+        use 'wbthomason/packer.nvim'
+
+        -- Collection of configurations for the built-in LSP client
         use {
                 'neovim/nvim-lspconfig',
-                requires = { '/simrat39/rust-tools.nvim' }
-        } -- Collection of configurations for the built-in LSP client
-        use 'williamboman/nvim-lsp-installer'
-        use 'nvim-lua/lsp-status.nvim'
-        use 'preservim/nerdtree'
-        use 'Chiel92/vim-autoformat'
+                requires = {
+                        { 'williamboman/nvim-lsp-installer' },
+                        { 'simrat39/rust-tools.nvim' }
+                },
+        }
+
+        -- usefull
         use 'jiangmiao/auto-pairs'
+        use 'Chiel92/vim-autoformat'
+        use 'preservim/nerdtree'
         use {
                 'nvim-telescope/telescope.nvim',
-                requires = { {'nvim-lua/plenary.nvim'} }
+                requires = {
+                        {'nvim-lua/plenary.nvim'}
+                }
         }
-        use {
-                'nvim-lualine/lualine.nvim',
-                requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-        }
+
+        -- code completion
         use 'hrsh7th/cmp-nvim-lsp'
         use 'hrsh7th/cmp-buffer'
         use 'hrsh7th/cmp-path'
         use 'hrsh7th/cmp-cmdline'
         use 'hrsh7th/nvim-cmp'
         use 'hrsh7th/cmp-nvim-lsp-signature-help'
+
+        -- snippets
+        use 'L3MON4D3/LuaSnip'
+        use 'rafamadriz/friendly-snippets'
+        use 'saadparwaiz1/cmp_luasnip'
+        use 'onsails/lspkind-nvim'
+        use 'ray-x/lsp_signature.nvim'
+
+        -- code actions
+        use 'weilbith/nvim-code-action-menu'
+
+        -- design
+        use 'rebelot/kanagawa.nvim'
+
+        -- header and bottom
         use {
-                'L3MON4D3/LuaSnip',
-                requires = { 'rafamadriz/friendly-snippets', 'saadparwaiz1/cmp_luasnip', 'onsails/lspkind-nvim', 'ray-x/lsp_signature.nvim' }
+                'nvim-lualine/lualine.nvim',
+                requires = {
+                        { 'kyazdani42/nvim-web-devicons', opt = true },
+                }
         }
+        use 'nvim-lua/lsp-status.nvim'
+
+
 end)
 
 vim.cmd([[
@@ -36,9 +61,6 @@ set ignorecase
 set number
 set relativenumber
 set nowrap
-
-" disable compability to old-time vi
-set nocompatible
 
 set scrolloff=8
 
@@ -54,20 +76,10 @@ set wildmode=longest,list
 syntax on
 
 " enable mouse click
-set mouse=n
+set mouse=a
 
 " fix leader
 let mapleader = ","
-
-" nerdtree shortcut
-nmap <leader>ne :NERDTreeFocus<cr>
-
-" TODO: FIX to use lua
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr
 
 colorscheme kanagawa
 
@@ -86,6 +98,10 @@ local lsp_status = require('lsp-status')
 
 -- Register the progress handler
 lsp_status.register_progress()
+-- remove that dumm looking 'V'
+lsp_status.config({
+        status_symbol = ''
+})
 
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
@@ -109,21 +125,39 @@ local on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+
+        -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', ':CodeActionMenu<CR>', opts)
+
         vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
         vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+        -- Find files using Telescope command-line sugar.
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ff', '<cmd>lua require(\'telescope.builtin\').find_files()<cr>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>fg' ,'<cmd>lua require(\'telescope.builtin\').live_grep()<cr>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>fb', '<cmd>lua require(\'telescope.builtin\').buffers()<cr>', opts)
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>fh', '<cmd>lua require(\'telescope.builtin\').help_tags()<cr>', opts)
+
+        -- nerdtree shortcut
+        vim.api.nvim_buf_set_keymap(bufnr, 'n',  '<leader>ne', ':NERDTreeFocus<cr>', opts)
 
         lsp_status.on_attach(client)
 end
 
-
+-- nvim-code-action-menu configurations
+vim.g.code_action_menu_window_border = 'single'
+vim.g.code_action_menu_show_details = false
+vim.g.code_action_menu_show_diff = false
 
 
 require('lualine').setup {
         sections = {
-                lualine_c = { 'filename', 'require("lsp-status").status()' },
+                lualine_c = {
+                        'filename', 'require("lsp-status").status()'
+                },
         },
         tabline = {
                 lualine_a = {'buffers'},
@@ -133,11 +167,10 @@ require('lualine').setup {
                 lualine_y = {},
                 lualine_z = {'tabs'}
         },
-        extensions = { 'nerdtree' }
 }
 
 -- Setup nvim-cmp.
-local cmp = require'cmp'
+local cmp = require('cmp')
 
 cmp.setup({
         snippet = {
@@ -222,13 +255,33 @@ local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.on_server_ready(function(server)
         local opts = {
                 on_attach = on_attach,
-                capabilities = capabilities
+                capabilities = capabilities,
+                handlers = ui_handlers
         }
 
         -- (optional) Customize the options passed to the server
         -- if server.name == "tsserver" then
         --     opts.root_dir = function() ... end
         -- end
+
+        if server.name == "sumneko_lua" then
+                opts.settings = {
+                        Lua = {
+                                diagnostics = {
+                                        -- Get the language server to recognize the `vim` global
+                                        globals = { 'vim' },
+                                },
+                                workspace = {
+                                        -- Make the server aware of Neovim runtime files
+                                        library = vim.api.nvim_get_runtime_file("", true),
+                                },
+                                -- Do not send telemetry data containing a randomized but unique identifier
+                                telemetry = {
+                                        enable = false,
+                                },
+                        },
+                }
+        end
 
         -- This setup() function will take the provided server configuration and decorate it with the necessary properties
         -- before passing it onwards to lspconfig.
