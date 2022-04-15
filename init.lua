@@ -34,6 +34,10 @@ require("packer").startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
 	use("hrsh7th/nvim-cmp")
+	use({
+		"petertriho/cmp-git",
+		requires = "nvim-lua/plenary.nvim",
+	})
 
 	-- snippets
 	use("L3MON4D3/LuaSnip")
@@ -59,6 +63,9 @@ require("packer").startup(function(use)
 
 	-- design
 	use("rebelot/kanagawa.nvim")
+	use("sainnhe/gruvbox-material")
+	use("sainnhe/sonokai")
+	use("projekt0n/github-nvim-theme")
 
 	-- for vertical line
 	use("davepinto/virtual-column.nvim")
@@ -99,9 +106,8 @@ set mouse=a
 " fix leader
 let mapleader = ","
 
-colorscheme kanagawa
 
-" nvim-cmp
+"" nvim-cmp
 set completeopt=menu,menuone,noselect
 
 " force vim to use a single column for both number and error
@@ -130,7 +136,34 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 
 " have Vim jump to the last position when reopening a file
 au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" Available values: 'hard', 'medium'(default), 'soft'
+let g:gruvbox_material_background = 'hard'
+
+" For better performance
+let g:gruvbox_material_better_performance = 1
+colorscheme gruvbox-material
 ]])
+
+require("lualine").setup({
+	options = {
+		theme = "gruvbox-material",
+	},
+	sections = {
+		lualine_c = {
+			"filename",
+			'require("lsp-status").status()',
+		},
+	},
+	tabline = {
+		lualine_a = { "buffers" },
+		lualine_b = { "branch" },
+		lualine_c = { "filename" },
+		lualine_x = {},
+		lualine_y = {},
+		lualine_z = { "tabs" },
+	},
+})
 
 require("virtual-column").init({
 	column_number = 100,
@@ -169,34 +202,34 @@ lspsaga.setup({
 })
 
 -- make everything silent
-local opts = { noremap = true, silent = true }
+local opts_key = { noremap = true, silent = true }
 
 -- lspconfig
-vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-vim.api.nvim_set_keymap("n", "gj", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-vim.api.nvim_set_keymap("n", "gk", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "gj", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "gk", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts_key)
 
 -- autoformat
-vim.api.nvim_set_keymap("n", "<leader>F", "<cmd>Autoformat<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>F", "<cmd>Autoformat<CR>", opts_key)
 
 -- find files using Telescope command-line sugar.
-vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", opts)
-vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts)
-vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", opts)
-vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts)
+vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", opts_key)
+vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", opts_key)
+vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", opts_key)
+vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", opts_key)
 
 -- nerdtree shortcut
-vim.api.nvim_set_keymap("n", "<leader>ne", "<cmd>NERDTreeToggle<cr>", opts)
+vim.api.nvim_set_keymap("n", "<leader>ne", "<cmd>NERDTreeToggle<cr>", opts_key)
 
 -- trouble shortcut
-vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>TroubleToggle<cr>", opts)
+vim.api.nvim_set_keymap("n", "<leader>tr", "<cmd>TroubleToggle<cr>", opts_key)
 
 -- lspsaga helpers
-vim.api.nvim_set_keymap("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)
-vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>Lspsaga code_action<CR>", opts)
-vim.api.nvim_set_keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
-vim.api.nvim_set_keymap("n", "gs", "<cmd>Lspsaga signature_help<CR>", opts)
+vim.api.nvim_set_keymap("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>Lspsaga code_action<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts_key)
+vim.api.nvim_set_keymap("n", "gs", "<cmd>Lspsaga signature_help<CR>", opts_key)
 --vim.api.nvim_set_keymap("n", "<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>", {})
 --vim.api.nvim_set_keymap("n", "<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>", {})
 
@@ -208,38 +241,21 @@ local on_attach = function(client, bufnr)
 
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts_key)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts_key)
 	-- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
 
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts_key)
 	--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 	--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
 	--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
 	--vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts_key)
 
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts_key)
 
 	lsp_status.on_attach(client)
 end
-
-require("lualine").setup({
-	sections = {
-		lualine_c = {
-			"filename",
-			'require("lsp-status").status()',
-		},
-	},
-	tabline = {
-		lualine_a = { "buffers" },
-		lualine_b = { "branch" },
-		lualine_c = { "filename" },
-		lualine_x = {},
-		lualine_y = {},
-		lualine_z = { "tabs" },
-	},
-})
 
 -- Setup nvim-cmp.
 local cmp = require("cmp")
@@ -272,8 +288,8 @@ cmp.setup({
 				buffer = "[Buffer]",
 				nvim_lsp = "[LSP]",
 				luasnip = "[LuaSnip]",
-				nvim_lua = "[Lua]",
 				latex_symbols = "[Latex]",
+				-- nvim_lua = "[Lua]",
 			},
 		}),
 	},
@@ -283,6 +299,7 @@ cmp.setup({
 		{ name = "luasnip" }, -- For luasnip users.
 		-- { name = 'ultisnips' }, -- For ultisnips users.
 		-- { name = 'snippy' }, -- For snippy users.
+        -- { name = "cmp_git" }, -- For cmp git users.
 	}, {
 		{ name = "buffer" },
 	}),
@@ -291,7 +308,7 @@ cmp.setup({
 -- Set configuration for specific filetype.
 cmp.setup.filetype("gitcommit", {
 	sources = cmp.config.sources({
-		{ name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
+		-- { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
 	}, {
 		{ name = "buffer" },
 	}),
@@ -333,24 +350,24 @@ lsp_installer.on_server_ready(function(server)
 	--     opts.root_dir = function() ... end
 	-- end
 
-	if server.name == "sumneko_lua" then
-		opts.settings = {
-			Lua = {
-				diagnostics = {
-					-- Get the language server to recognize the `vim` global
-					globals = { "vim" },
-				},
-				workspace = {
-					-- Make the server aware of Neovim runtime files
-					library = vim.api.nvim_get_runtime_file("", true),
-				},
-				-- Do not send telemetry data containing a randomized but unique identifier
-				telemetry = {
-					enable = false,
-				},
-			},
-		}
-	end
+	-- if server.name == "sumneko_lua" then
+	-- 	opts.settings = {
+	-- 		Lua = {
+	-- 			diagnostics = {
+	-- 				-- Get the language server to recognize the `vim` global
+	-- 				globals = { "vim" },
+	-- 			},
+	-- 			workspace = {
+	-- 				-- Make the server aware of Neovim runtime files
+	-- 				library = vim.api.nvim_get_runtime_file("", true),
+	-- 			},
+	-- 			-- Do not send telemetry data containing a randomized but unique identifier
+	-- 			telemetry = {
+	-- 				enable = false,
+	-- 			},
+	-- 		},
+	-- 	}
+	-- end
 
 	-- This setup() function will take the provided server configuration and decorate it with the necessary properties
 	-- before passing it onwards to lspconfig.
