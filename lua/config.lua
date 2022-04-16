@@ -1,90 +1,71 @@
-require("packer").startup(function(use)
-	-- Package manager
-	use("wbthomason/packer.nvim")
+---- General configuration
+-- general
+vim.opt.ignorecase = true
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.wrap = false
+vim.opt.scrolloff = 8
 
-	-- Collection of configurations for the built-in LSP client
-	use("neovim/nvim-lspconfig")
-	use("williamboman/nvim-lsp-installer")
+-- bash-like tab completion
+vim.opt.wildmode = { "longest", "list" }
 
-	-- for rust specific tools
-	use("simrat39/rust-tools.nvim")
+-- handle tabs
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.expandtab = true
 
-	-- usefull
-	use("jiangmiao/auto-pairs")
-	use("Chiel92/vim-autoformat")
-	use({
-		"preservim/nerdtree",
-		requires = {
-			{ "ryanoasis/vim-devicons" },
-			{ "Xuyuanp/nerdtree-git-plugin" },
-		},
-	})
-	use({
-		"nvim-telescope/telescope.nvim",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-		},
-	})
+-- enable mouse click and scrolling
+vim.opt.mouse = "a"
 
-	use("Yggdroot/indentLine")
+-- fix leader
+vim.g.mapleader = ","
 
-	-- code completion
-	use("hrsh7th/cmp-nvim-lsp")
-	use("hrsh7th/cmp-buffer")
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-cmdline")
-	use("hrsh7th/nvim-cmp")
-	use({
-		"petertriho/cmp-git",
-		requires = "nvim-lua/plenary.nvim",
-	})
+--  nvim-cmp
+vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
-	-- snippets
-	use("L3MON4D3/LuaSnip")
-	use("rafamadriz/friendly-snippets")
-	use("saadparwaiz1/cmp_luasnip")
-	use("onsails/lspkind-nvim")
-	use("ray-x/lsp_signature.nvim")
+-- force vim to use a single column for both number and error hightlighting
+vim.opt.signcolumn = "number"
 
-	-- code actions
-	use("tami5/lspsaga.nvim")
+---- Autoformat
+-- Deactivate the fallback autoindent of nvim
+vim.g.autoformat_autoindent = 0
+vim.g.autoformat_retab = 0
+vim.g.autoformat_remove_trailing_spaces = 0
+-- vim.cmd([[
+-- au BufWrite * :Autoformat
+-- ]])
 
-	use({
-		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
-		config = function()
-			require("trouble").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			})
-		end,
-	})
+-- python fix
+vim.g.python3_host_prog = "/home/adrian/.pyenv/shims/python3"
 
-	-- design
-	use("rebelot/kanagawa.nvim")
-	use("sainnhe/gruvbox-material")
-	use("sainnhe/sonokai")
-	use("projekt0n/github-nvim-theme")
+---- theme
+-- Available values: 'hard', 'medium'(default), 'soft'
+vim.g.gruvbox_material_background = "hard"
 
-	-- for vertical line
-	use("davepinto/virtual-column.nvim")
+-- " For better performance
+-- let g:gruvbox_material_better_performance = 1
+vim.g.gruvbox_material_better_performance = 1
+vim.cmd([[ 
+" set color
+colorscheme gruvbox-material
+]])
 
-	-- header and bottom
-	use({
-		"nvim-lualine/lualine.nvim",
-		requires = {
-			{ "kyazdani42/nvim-web-devicons", opt = true },
-		},
-	})
-	use({
-		"akinsho/bufferline.nvim",
-		tag = "*",
-		requires = { "kyazdani42/nvim-web-devicons" },
-	})
-	use("nvim-lua/lsp-status.nvim")
-end)
+-- Other configurations
+vim.cmd([[ 
+" have Vim jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+"" NERDTree
+" Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+]])
+
+-- LSP-Status
 local lsp_status = require("lsp-status")
 -- completion_customize_lsp_label as used in completion-nvim
 -- Optional: customize the kind labels used in identifying the current function.
