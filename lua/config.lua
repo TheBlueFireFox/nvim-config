@@ -227,11 +227,11 @@ do
 			format = require("lspkind").cmp_format({
 				mode = "symbol_text",
 				menu = {
-					buffer = "[Buffer]",
+					nvim_lua = "[Lua]",
 					nvim_lsp = "[LSP]",
 					luasnip = "[LuaSnip]",
 					-- latex_symbols = "[Latex]",
-					-- nvim_lua = "[Lua]",
+					buffer = "[Buffer]",
 				},
 			}),
 		},
@@ -242,6 +242,7 @@ do
 			-- { name = 'ultisnips' }, -- For ultisnips users.
 			-- { name = 'snippy' }, -- For snippy users.
 			-- { name = "cmp_git" }, -- For cmp git users.
+			{ name = "nvim_lua" }, -- For nvim lua users.
 		}, {
 			{ name = "buffer" },
 		}),

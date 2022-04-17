@@ -1,4 +1,18 @@
-require("packer").startup(function(use)
+-- automatically install and set up packer.nvim on any machine you clone your configuration to
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local packer_bootstrap = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+	packer_bootstrap = vim.fn.system({
+		"git",
+		"clone",
+		"--depth",
+		"1",
+		"https://github.com/wbthomason/packer.nvim",
+		install_path,
+	})
+end
+
+local packer = require("packer").startup(function(use)
 	-- Package manager
 	use("wbthomason/packer.nvim")
 
@@ -12,20 +26,6 @@ require("packer").startup(function(use)
 	-- usefull
 	use("jiangmiao/auto-pairs")
 	use("Chiel92/vim-autoformat")
-	use({
-		"preservim/nerdtree",
-		requires = {
-			{ "ryanoasis/vim-devicons" },
-			{ "Xuyuanp/nerdtree-git-plugin" },
-		},
-	})
-	use({
-		"nvim-telescope/telescope.nvim",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-		},
-	})
-
 	use("Yggdroot/indentLine")
 
 	-- code completion
@@ -34,6 +34,7 @@ require("packer").startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-cmdline")
 	use("hrsh7th/nvim-cmp")
+	use("hrsh7th/cmp-nvim-lua")
 	use({
 		"petertriho/cmp-git",
 		requires = "nvim-lua/plenary.nvim",
@@ -48,7 +49,6 @@ require("packer").startup(function(use)
 
 	-- code actions
 	use("tami5/lspsaga.nvim")
-
 	use({
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
@@ -60,6 +60,20 @@ require("packer").startup(function(use)
 			})
 		end,
 	})
+	use({
+		"nvim-telescope/telescope.nvim",
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+		},
+	})
+	use({
+		"preservim/nerdtree",
+		requires = {
+			{ "ryanoasis/vim-devicons" },
+			{ "Xuyuanp/nerdtree-git-plugin" },
+		},
+	})
+
 
 	-- design
 	use("rebelot/kanagawa.nvim")
@@ -83,5 +97,20 @@ require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons" },
 	})
 	use("nvim-lua/lsp-status.nvim")
+
+	-- Automatically set up your configuration after cloning packer.nvim
+	-- Put this at the end after all plugins
+	if packer_bootstrap then
+		require("packer").sync()
+	end
 end)
 
+--  run :PackerCompile whenever plugins.lua is updated with an autocommand:
+vim.cmd([[
+augroup packer_user_config
+  autocmd!
+  autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+augroup end
+]])
+
+return packer
