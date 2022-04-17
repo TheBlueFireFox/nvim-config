@@ -79,7 +79,6 @@ lsp_status.register_progress()
 -- remove that dumb looking 'V'
 lsp_status.config({
 	status_symbol = "",
-	kind_labels = vim.g.completion_customize_lsp_label,
 })
 
 vim.opt.termguicolors = true
@@ -96,12 +95,11 @@ require("lualine").setup({
 	options = {
 		theme = "gruvbox-material",
 	},
-	sections = {
-		lualine_c = {
-			"filename",
-			'require("lsp-status").status()',
-		},
-	},
+	 sections = {
+	 	lualine_c = {
+	 		"filename",
+	 	},
+	 },
 	tabline = {},
 })
 
@@ -125,6 +123,8 @@ require("lspsaga").setup({
 		quit = "<Esc>",
 	},
 })
+
+require("trouble").setup()
 
 local map = function(short, com, mode, opts)
 	opts = opts or { noremap = true, silent = true }
