@@ -1,3 +1,11 @@
 -- set up plugings etc.
-require("plugins")
-require("config")
+local packer = require("plugins").run()
+
+-- based on https://github.com/wbthomason/packer.nvim#bootstrapping
+if packer.bootstrap then
+	vim.cmd([[
+        autocmd User PackerComplete lua require("config")
+    ]])
+else
+	require("config")
+end
