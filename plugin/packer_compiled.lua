@@ -169,6 +169,11 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
+  neoformat = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/neoformat",
+    url = "https://github.com/sbdchd/neoformat"
+  },
   nerdtree = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nerdtree",
@@ -228,11 +233,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
-  },
-  ["vim-autoformat"] = {
-    loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vim-autoformat",
-    url = "https://github.com/Chiel92/vim-autoformat"
   },
   ["vim-devicons"] = {
     loaded = true,

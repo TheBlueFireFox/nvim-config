@@ -1,7 +1,7 @@
-Packer = { bootstrap = false, callback = nil }
+local packer = { bootstrap = false, callback = nil }
 
-function Packer:startup()
-	local packer = require("packer").startup(function(use)
+function packer:startup()
+	local pframe = require("packer").startup(function(use)
 		-- Package manager
 		use("wbthomason/packer.nvim")
 
@@ -14,7 +14,8 @@ function Packer:startup()
 
 		-- usefull
 		use("jiangmiao/auto-pairs")
-		use("Chiel92/vim-autoformat")
+		-- use("Chiel92/vim-autoformat")
+		use("sbdchd/neoformat")
 		use("Yggdroot/indentLine")
 
 		-- code completion
@@ -62,9 +63,6 @@ function Packer:startup()
 		use("sainnhe/sonokai")
 		use("projekt0n/github-nvim-theme")
 
-		-- for vertical line
-		use("davepinto/virtual-column.nvim")
-
 		-- header and bottom
 		use({
 			"nvim-lualine/lualine.nvim",
@@ -86,10 +84,10 @@ function Packer:startup()
 		end
 	end)
 
-	self.packer = packer
+	self.packer = pframe
 end
 
-function Packer:install()
+function packer:install()
 	-- based on https://github.com/wbthomason/packer.nvim#bootstrapping
 	-- automatically install and set up packer.nvim on any machine you clone your configuration to
 	local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -109,7 +107,7 @@ function Packer:install()
 end
 
 local function RandomVariable(length)
-    math.randomseed(os.time())
+	math.randomseed(os.time())
 	local res = ""
 	for _ = 1, length do
 		res = res .. string.char(math.random(97, 122))
@@ -117,8 +115,7 @@ local function RandomVariable(length)
 	return res
 end
 
-
-function Packer:run()
+function packer:run()
 	self:install()
 
 	self:startup()
@@ -137,18 +134,17 @@ function Packer:run()
 	end
 	-- generate random string as a global variable
 	-- so that the global namespace will not be poluted
-    -- too much
-    local name = RandomVariable(20)
-    _G[name] = function()
+	-- too much
+	local name = RandomVariable(20)
+	_G[name] = function()
 		require("packer.display").quit()
 		self.callback()
 	end
 
-	vim.cmd("autocmd User PackerComplete lua ".. name .. "()")
-
+	vim.cmd("autocmd User PackerComplete lua " .. name .. "()")
 end
 
-function Packer:new(o)
+function packer:new(o)
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
@@ -159,9 +155,9 @@ end
 
 return {
 	run = function(o)
-		local packer = Packer:new(o)
-		packer:run()
+		local a = packer:new(o)
+		a:run()
 
-		return packer
+		return a
 	end,
 }

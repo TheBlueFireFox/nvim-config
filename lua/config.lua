@@ -27,18 +27,6 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 -- force vim to use a single column for both number and error hightlighting
 vim.opt.signcolumn = "number"
 
----- Autoformat
--- Deactivate the fallback autoindent of nvim
-vim.g.autoformat_autoindent = 0
-vim.g.autoformat_retab = 0
-vim.g.autoformat_remove_trailing_spaces = 0
--- vim.cmd([[
--- au BufWrite * :Autoformat
--- ]])
-
--- python fix
-vim.g.python3_host_prog = "/home/adrian/.pyenv/shims/python3"
-
 ---- theme
 -- Available values: 'hard', 'medium'(default), 'soft'
 vim.g.gruvbox_material_background = "hard"
@@ -103,18 +91,6 @@ require("lualine").setup({
 	tabline = {},
 })
 
--- TODO: fix
--- require("virtual-column").init({
--- 	column_number = 100,
--- 	overlay = true,
--- 	vert_char = "│",
--- 	enabled = true,
---
--- 	-- do not show column on this buffers and types
--- 	buftype_exclude = {},
--- 	filetype_exclude = {},
--- })
-
 -- make me be abel to use esc to exit the action
 require("lspsaga").setup({
 	code_action_keys = {
@@ -144,7 +120,8 @@ map("gk", "<cmd>lua vim.diagnostic.goto_next()<CR>")
 map("<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>")
 
 -- autoformat
-map("<leader>F", "<cmd>Autoformat<CR>")
+-- map("<leader>F", "<cmd>Autoformat<CR>")
+map("<leader>F", "<cmd>Neoformat<CR>")
 
 -- find files using Telescope command-line sugar.
 map("<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>")
