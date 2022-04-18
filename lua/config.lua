@@ -28,12 +28,16 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.signcolumn = "number"
 
 ---- theme
+-- Available values: 'material', 'mix', 'original'
+vim.g.gruvbox_material_palette = "mix"
+
 -- Available values: 'hard', 'medium'(default), 'soft'
 vim.g.gruvbox_material_background = "hard"
 
+
 -- " For better performance
--- let g:gruvbox_material_better_performance = 1
 vim.g.gruvbox_material_better_performance = 1
+
 vim.cmd([[ 
 " set color
 colorscheme gruvbox-material
