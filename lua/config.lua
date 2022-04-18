@@ -103,16 +103,17 @@ require("lualine").setup({
 	tabline = {},
 })
 
-require("virtual-column").init({
-	column_number = 100,
-	overlay = true,
-	vert_char = "│",
-	enabled = true,
-
-	-- do not show column on this buffers and types
-	buftype_exclude = {},
-	filetype_exclude = {},
-})
+-- TODO: fix
+-- require("virtual-column").init({
+-- 	column_number = 100,
+-- 	overlay = true,
+-- 	vert_char = "│",
+-- 	enabled = true,
+--
+-- 	-- do not show column on this buffers and types
+-- 	buftype_exclude = {},
+-- 	filetype_exclude = {},
+-- })
 
 -- make me be abel to use esc to exit the action
 require("lspsaga").setup({

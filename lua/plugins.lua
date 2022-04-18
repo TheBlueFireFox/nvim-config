@@ -1,4 +1,4 @@
-Packer = { bootstrap = false }
+Packer = { bootstrap = false, callback = nil }
 
 function Packer:startup()
 	local packer = require("packer").startup(function(use)
@@ -119,7 +119,20 @@ function Packer:run()
           autocmd!
           autocmd BufWritePost plugins.lua source <afile> | PackerCompile
         augroup end
+    ]])
+
+	-- based on https://github.com/wbthomason/packer.nvim#bootstrapping
+	if self.bootstrap then
+		PostPluginCompileRunner = function()
+			require("packer.display").quit()
+			self.callback()
+		end
+		vim.cmd([[
+                 autocmd User PackerComplete lua PostPluginCompileRunner() 
         ]])
+	else
+		self.callback()
+	end
 end
 
 function Packer:new(o)
@@ -127,12 +140,13 @@ function Packer:new(o)
 	setmetatable(o, self)
 	self.__index = self
 	self.bootstrap = false
+	self.callback = self.callback or function() end
 	return o
 end
 
 return {
-	run = function()
-		local packer = Packer:new()
+	run = function(o)
+		local packer = Packer:new(o)
 		packer:run()
 
 		return packer
