@@ -119,15 +119,15 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["dressing.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/dressing.nvim",
+    url = "https://github.com/stevearc/dressing.nvim"
+  },
   ["friendly-snippets"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/friendly-snippets",
     url = "https://github.com/rafamadriz/friendly-snippets"
-  },
-  ["github-nvim-theme"] = {
-    loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/github-nvim-theme",
-    url = "https://github.com/projekt0n/github-nvim-theme"
   },
   ["gruvbox-material"] = {
     loaded = true,
@@ -139,10 +139,10 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/indentLine",
     url = "https://github.com/Yggdroot/indentLine"
   },
-  ["kanagawa.nvim"] = {
+  ["legendary.nvim"] = {
     loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
-    url = "https://github.com/rebelot/kanagawa.nvim"
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/legendary.nvim",
+    url = "https://github.com/mrjones2014/legendary.nvim"
   },
   ["lsp-status.nvim"] = {
     loaded = true,
@@ -158,11 +158,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lspkind-nvim",
     url = "https://github.com/onsails/lspkind-nvim"
-  },
-  ["lspsaga.nvim"] = {
-    loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
-    url = "https://github.com/tami5/lspsaga.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -199,6 +194,11 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-treesitter"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
   ["nvim-web-devicons"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
@@ -219,10 +219,15 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/rust-tools.nvim",
     url = "https://github.com/simrat39/rust-tools.nvim"
   },
-  sonokai = {
+  ["telescope-fzf-native.nvim"] = {
     loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/sonokai",
-    url = "https://github.com/sainnhe/sonokai"
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
+    url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
+  },
+  ["telescope-ui-select.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/telescope-ui-select.nvim",
+    url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
   },
   ["telescope.nvim"] = {
     loaded = true,

@@ -14,6 +14,7 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
+vim.opt.magic = true
 
 -- enable mouse click and scrolling
 vim.opt.mouse = "a"
@@ -33,7 +34,6 @@ vim.g.gruvbox_material_palette = "mix"
 
 -- Available values: 'hard', 'medium'(default), 'soft'
 vim.g.gruvbox_material_background = "hard"
-
 
 -- " For better performance
 vim.g.gruvbox_material_better_performance = 1
@@ -97,85 +97,118 @@ require("lualine").setup({
 	tabline = {},
 })
 
--- make me be abel to use esc to exit the action
-require("lspsaga").setup({
-	code_action_keys = {
-		quit = "<Esc>",
-	},
-	rename_action_keys = {
-		quit = "<Esc>",
+-- https://github.com/nvim-telescope/telescope.nvim#themes
+-- https://github.com/nvim-telescope/telescope.nvim#layout-display
+-- https://github.com/nvim-telescope/telescope.nvim#pickers
+require("telescope").setup({
+	pickers = {
+		lsp_code_actions = {
+			theme = "cursor",
+		},
 	},
 })
 
+-- To get ui-select loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require("telescope").load_extension("ui-select")
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require("telescope").load_extension("fzf")
+
 require("trouble").setup()
 
-local map = function(short, com, mode, opts)
-	opts = opts or { noremap = true, silent = true }
-	mode = mode or "n"
-	-- make everything silent
-	vim.api.nvim_set_keymap(mode, short, com, opts)
+require("legendary").setup()
+
+local opt = { noremap = true, silent = true }
+local helpers = require("legendary.helpers")
+
+do
+	local keymaps = {
+		-- general
+		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
+		-- lspconfig
+		{ "gj", vim.diagnostic.goto_prev, description = "Diagnostics go to previous", opts = opt },
+		{ "gk", vim.diagnostic.goto_next, description = "Diagnostics go to next", opts = opt },
+		-- autoformat
+		{ "<leader>F", "<cmd>Neoformat<CR>", description = "Format File", opts = opt },
+		-- find files using Telescope command-line sugar.
+		{
+			"<leader>ff",
+			helpers.lazy_required_fn("telescope.builtin", "find_files"),
+			description = "Telescope: Find Files",
+			opts = opt,
+		},
+		{
+			"<leader>fg",
+			helpers.lazy_required_fn("telescope.builtin", "live_grep"),
+			description = "Telescope: Live Grep",
+			opts = opt,
+		},
+		{
+			"<leader>fb",
+			helpers.lazy_required_fn("telescope.builtin", "buffers"),
+			description = "Telescope: Buffers",
+			opts = opt,
+		},
+		{
+			"<leader>fh",
+			helpers.lazy_required_fn("telescope.builtin", "help_tags"),
+			description = "Telescope: Help Tags",
+			opts = opt,
+		},
+		-- nerdtree shortcut
+		{ "<leader>ne", "<cmd>NERDTreeToggle<cr>", description = "Open NERDTree", opts = opt },
+		-- trouble shortcut
+		{ "<leader>tr", "<cmd>TroubleToggle<cr>", description = "Trouble Toggle", opts = opt },
+		-- legendary
+		{
+			"<leader>l",
+			helpers.lazy_required_fn("legendary", "find", "keymaps"),
+			description = "Legendary: search keymaps",
+			opts = opt,
+		},
+		{
+			"<leader>ll",
+			helpers.lazy_required_fn("legendary", "find"),
+			description = "Legendary: search all",
+			opts = opt,
+		},
+	}
+
+	require("legendary").bind_keymaps(keymaps)
 end
-
--- general
-map("<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>")
-
--- lspconfig
-map("<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>")
-map("gj", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
-map("gk", "<cmd>lua vim.diagnostic.goto_next()<CR>")
-map("<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>")
-
--- autoformat
--- map("<leader>F", "<cmd>Autoformat<CR>")
-map("<leader>F", "<cmd>Neoformat<CR>")
-
--- find files using Telescope command-line sugar.
-map("<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>")
-map("<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>")
-map("<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>")
-map("<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>")
-
--- nerdtree shortcut
-map("<leader>ne", "<cmd>NERDTreeToggle<cr>")
-
--- trouble shortcut
-map("<leader>tr", "<cmd>TroubleToggle<cr>")
-
--- lspsaga helpers
-map("<leader>rn", "<cmd>Lspsaga rename<CR>")
-map("<leader>a", "<cmd>Lspsaga code_action<CR>")
-map("K", "<cmd>Lspsaga hover_doc<CR>")
-map("gs", "<cmd>Lspsaga signature_help<CR>")
---map("<C-u>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1, '<c-u>')<cr>", {})
---map("<C-d>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1, '<c-d>')<cr>", {})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-	map = function(short, com, mode, opts)
-		opts = opts or { noremap = true, silent = true }
-		mode = mode or "n"
-		-- make everything silent
-		vim.api.nvim_buf_set_keymap(bufnr, "n", short, com, opts)
-	end
-
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-	-- Mappings.
-	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	map("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-	map("gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-	-- map('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+	--{'<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
+	--{'<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
+	--{'<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
 
-	map("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-	--map('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
-	--map('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>')
-	--map('<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>')
-	--map('<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
-	map("<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+	local keymaps = {
+		-- Mappings.
+		-- See `:help vim.lsp.*` for documentation on any of the below functions
+		{ "K", vim.lsp.buf.hover, description = "Display hover information", opts = opt },
+		{ "<leader>rn", vim.lsp.buf.rename, description = "Rename", opts = opt },
+		{ "gD", vim.lsp.buf.declaration, description = "Jump to symbol declaration", opts = opt },
+		{ "gd", vim.lsp.buf.definition, description = "Jump to symbol definition", opts = opt },
+		{ "<leader>D", vim.lsp.buf.type_definition, description = "Jump to type definition", opts = opt },
+		{ "gi", vim.lsp.buf.implementation, description = "List all implementations for the symbol", opts = opt },
+		-- { "<leader>a", vim.lsp.buf.code_action, description = "Code Action", opts = opt },
+		{
+			"<leader>a",
+			helpers.lazy_required_fn("telescope.builtin", "lsp_code_actions"),
+			description = "Code Action",
+			opts = opt,
+		},
+		{ "gs", vim.lsp.buf.signature_help, description = "Show Signature Help", opts = opt },
+		{ "gr", vim.lsp.buf.references, description = "List all references", opts = opt },
+	}
 
-	map("gr", "<cmd>lua vim.lsp.buf.references()<CR>")
+	require("legendary").bind_keymaps(keymaps)
 
 	lsp_status.on_attach(client)
 end

@@ -14,9 +14,10 @@ function packer:startup()
 
 		-- usefull
 		use("jiangmiao/auto-pairs")
-		-- use("Chiel92/vim-autoformat")
 		use("sbdchd/neoformat")
 		use("Yggdroot/indentLine")
+		use("mrjones2014/legendary.nvim")
+		use("stevearc/dressing.nvim")
 
 		-- code completion
 		use("hrsh7th/cmp-nvim-lsp")
@@ -38,7 +39,6 @@ function packer:startup()
 		use("ray-x/lsp_signature.nvim")
 
 		-- code actions
-		use("tami5/lspsaga.nvim")
 		use({
 			"folke/trouble.nvim",
 			requires = "kyazdani42/nvim-web-devicons",
@@ -47,6 +47,8 @@ function packer:startup()
 			"nvim-telescope/telescope.nvim",
 			requires = {
 				{ "nvim-lua/plenary.nvim" },
+				{ "nvim-telescope/telescope-ui-select.nvim" },
+                {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 			},
 		})
 		use({
@@ -56,12 +58,13 @@ function packer:startup()
 				{ "Xuyuanp/nerdtree-git-plugin" },
 			},
 		})
+		use({
+			"nvim-treesitter/nvim-treesitter",
+			run = ":TSUpdate",
+		})
 
 		-- design
-		use("rebelot/kanagawa.nvim")
 		use("sainnhe/gruvbox-material")
-		use("sainnhe/sonokai")
-		use("projekt0n/github-nvim-theme")
 
 		-- header and bottom
 		use({
