@@ -108,6 +108,16 @@ function Packer:install()
 	end
 end
 
+local function RandomVariable(length)
+    math.randomseed(os.time())
+	local res = ""
+	for _ = 1, length do
+		res = res .. string.char(math.random(97, 122))
+	end
+	return res
+end
+
+
 function Packer:run()
 	self:install()
 
@@ -121,18 +131,21 @@ function Packer:run()
         augroup end
     ]])
 
-	-- based on https://github.com/wbthomason/packer.nvim#bootstrapping
-	if self.bootstrap then
-		PostPluginCompileRunner = function()
-			require("packer.display").quit()
-			self.callback()
-		end
-		vim.cmd([[
-                 autocmd User PackerComplete lua PostPluginCompileRunner() 
-        ]])
-	else
+	if not self.bootstrap then
+		self.callback()
+		return
+	end
+	-- generate random string as a global variable
+	-- so that the global namespace will not be poluted
+    -- too much
+    local name = RandomVariable(20)
+    _G[name] = function()
+		require("packer.display").quit()
 		self.callback()
 	end
+
+	vim.cmd("autocmd User PackerComplete lua ".. name .. "()")
+
 end
 
 function Packer:new(o)
