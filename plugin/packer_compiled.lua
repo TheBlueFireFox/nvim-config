@@ -238,11 +238,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vim-devicons",
     url = "https://github.com/ryanoasis/vim-devicons"
-  },
-  ["virtual-column.nvim"] = {
-    loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/virtual-column.nvim",
-    url = "https://github.com/davepinto/virtual-column.nvim"
   }
 }
 

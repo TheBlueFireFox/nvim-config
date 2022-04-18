@@ -67,6 +67,7 @@ lsp_status.register_progress()
 -- remove that dumb looking 'V'
 lsp_status.config({
 	status_symbol = "",
+	diagnostics = false,
 })
 
 vim.opt.termguicolors = true
@@ -86,6 +87,7 @@ require("lualine").setup({
 	sections = {
 		lualine_c = {
 			"filename",
+			"require('lsp-status').status()",
 		},
 	},
 	tabline = {},
