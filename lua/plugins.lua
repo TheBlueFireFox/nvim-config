@@ -47,8 +47,8 @@ function packer:startup()
 			"nvim-telescope/telescope.nvim",
 			requires = {
 				{ "nvim-lua/plenary.nvim" },
-				{ "nvim-telescope/telescope-ui-select.nvim" },
-                {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+				{ "stevearc/dressing.nvim" },
+				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			},
 		})
 		use({
@@ -65,6 +65,7 @@ function packer:startup()
 
 		-- design
 		use("sainnhe/gruvbox-material")
+		use("folke/tokyonight.nvim")
 
 		-- header and bottom
 		use({

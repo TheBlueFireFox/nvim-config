@@ -30,7 +30,7 @@ vim.opt.signcolumn = "number"
 
 ---- theme
 -- Available values: 'material', 'mix', 'original'
-vim.g.gruvbox_material_palette = "mix"
+vim.g.gruvbox_material_palette = "material"
 
 -- Available values: 'hard', 'medium'(default), 'soft'
 vim.g.gruvbox_material_background = "hard"
@@ -38,10 +38,12 @@ vim.g.gruvbox_material_background = "hard"
 -- " For better performance
 vim.g.gruvbox_material_better_performance = 1
 
-vim.cmd([[ 
-" set color
-colorscheme gruvbox-material
-]])
+-- Example config in Lua
+vim.g.tokyonight_style = "night"
+
+-- set color
+-- vim.cmd("colorscheme gruvbox-material")
+vim.cmd("colorscheme tokyonight")
 
 -- Other configurations
 vim.cmd([[ 
@@ -86,7 +88,7 @@ require("bufferline").setup({
 
 require("lualine").setup({
 	options = {
-		theme = "gruvbox-material",
+		theme = "auto",
 	},
 	sections = {
 		lualine_c = {
@@ -95,6 +97,13 @@ require("lualine").setup({
 		},
 	},
 	tabline = {},
+})
+
+require('dressing').setup({
+  input = {
+    -- Window transparency (0-100)
+    winblend = 0,
+  },
 })
 
 -- https://github.com/nvim-telescope/telescope.nvim#themes
@@ -108,9 +117,6 @@ require("telescope").setup({
 	},
 })
 
--- To get ui-select loaded and working with telescope, you need to call
--- load_extension, somewhere after setup function:
-require("telescope").load_extension("ui-select")
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
 require("telescope").load_extension("fzf")
