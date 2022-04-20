@@ -13,7 +13,7 @@ function packer:startup()
 		use("simrat39/rust-tools.nvim")
 
 		-- usefull
-		use("jiangmiao/auto-pairs")
+		use("windwp/nvim-autopairs")
 		use("sbdchd/neoformat")
 		use("Yggdroot/indentLine")
 		use("mrjones2014/legendary.nvim")

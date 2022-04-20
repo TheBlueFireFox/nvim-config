@@ -78,6 +78,8 @@ lsp_status.config({
 
 vim.opt.termguicolors = true
 
+require('nvim-autopairs').setup()
+
 require("bufferline").setup({
 	options = {
 		mode = "tabs",
