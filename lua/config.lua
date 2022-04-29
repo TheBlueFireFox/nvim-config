@@ -78,7 +78,7 @@ lsp_status.config({
 
 vim.opt.termguicolors = true
 
-require('nvim-autopairs').setup()
+require("nvim-autopairs").setup()
 
 require("bufferline").setup({
 	options = {
@@ -101,11 +101,11 @@ require("lualine").setup({
 	tabline = {},
 })
 
-require('dressing').setup({
-  input = {
-    -- Window transparency (0-100)
-    winblend = 0,
-  },
+require("dressing").setup({
+	input = {
+		-- Window transparency (0-100)
+		winblend = 0,
+	},
 })
 
 -- https://github.com/nvim-telescope/telescope.nvim#themes
@@ -301,38 +301,26 @@ do
 	})
 end
 
+local lsp_config = require("lspconfig")
+local lsp_installer = require("nvim-lsp-installer")
+
+lsp_installer.setup({})
+
+local opts = {
+	on_attach = on_attach,
+	capabilities = require("cmp_nvim_lsp").update_capabilities(
+		-- Setup lspconfig.
+		vim.lsp.protocol.make_client_capabilities()
+	),
+}
+
 -- Register a handler that will be called for each installed server when it's ready (i.e.
 -- when installation is finished or if the server is already installed).
-require("nvim-lsp-installer").on_server_ready(function(server)
-	local opts = {
-		on_attach = on_attach,
-		capabilities = require("cmp_nvim_lsp").update_capabilities(
-			-- Setup lspconfig.
-			vim.lsp.protocol.make_client_capabilities()
-		),
-	}
 
-	-- (optional) Customize the options passed to the server
-	-- if server.name == "tsserver" then
-	--     opts.root_dir = function() ... end
-	-- end
-
-	-- This setup() function will take the provided server configuration and decorate it with the
-	-- necessary properties before passing it onwards to lspconfig.
-	-- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-	if server.name == "rust_analyzer" then
-		-- Initialize the LSP via rust-tools instead
-		require("rust-tools").setup({
-			-- The "server" property provided in rust-tools setup function are the
-			-- settings rust-tools will provide to lspconfig during init.
-			-- We merge the necessary settings from nvim-lsp-installer (server:get_default_options()
-			-- with the user's own settings (opts).
-			server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
-		})
-		server:attach_buffers()
-		-- Only if standalone support is needed
-		require("rust-tools").start_standalone_if_required()
+for _, server in ipairs(lsp_installer.get_installed_servers()) do
+	if server.name ~= "rust_analyzer" then
+		lsp_config[server.name].setup(opts)
 	else
-		server:setup(opts)
+		require("rust-tools").setup(opts)
 	end
-end)
+end
