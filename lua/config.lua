@@ -106,18 +106,15 @@ require("dressing").setup({
 		-- Window transparency (0-100)
 		winblend = 0,
 	},
+	select = {
+		telescope = require("telescope.themes").get_cursor({}),
+	},
 })
 
 -- https://github.com/nvim-telescope/telescope.nvim#themes
 -- https://github.com/nvim-telescope/telescope.nvim#layout-display
 -- https://github.com/nvim-telescope/telescope.nvim#pickers
-require("telescope").setup({
-	pickers = {
-		lsp_code_actions = {
-			theme = "cursor",
-		},
-	},
-})
+require("telescope").setup({})
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
@@ -205,13 +202,7 @@ local on_attach = function(client, bufnr)
 		{ "gd", vim.lsp.buf.definition, description = "Jump to symbol definition", opts = opt },
 		{ "<leader>D", vim.lsp.buf.type_definition, description = "Jump to type definition", opts = opt },
 		{ "gi", vim.lsp.buf.implementation, description = "List all implementations for the symbol", opts = opt },
-		-- { "<leader>a", vim.lsp.buf.code_action, description = "Code Action", opts = opt },
-		{
-			"<leader>a",
-			helpers.lazy_required_fn("telescope.builtin", "lsp_code_actions"),
-			description = "Code Action",
-			opts = opt,
-		},
+		{ "<leader>a", vim.lsp.buf.code_action, description = "Code Action", opts = opt },
 		{ "gs", vim.lsp.buf.signature_help, description = "Show Signature Help", opts = opt },
 		{ "gr", vim.lsp.buf.references, description = "List all references", opts = opt },
 	}
@@ -319,8 +310,8 @@ local opts = {
 
 for _, server in ipairs(lsp_installer.get_installed_servers()) do
 	if server.name == "rust_analyzer" then
-        require("rust-tools").setup({ server = opts })
-    else
+		require("rust-tools").setup({ server = opts })
+	else
 		lsp_config[server.name].setup(opts)
 	end
 end
