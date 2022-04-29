@@ -46,18 +46,28 @@ vim.g.tokyonight_style = "night"
 vim.cmd("colorscheme tokyonight")
 
 -- Other configurations
-vim.cmd([[ 
-" have Vim jump to the last position when reopening a file
-au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+-- have Vim jump to the last position when reopening a file
+vim.api.nvim_create_autocmd(
+	"BufReadPost",
+	{ command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] }
+)
 
-"" NERDTree
-" Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif
+--- NERDTree
+-- Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
+vim.api.nvim_create_autocmd("StdinReadPre", {
+	pattern = "*",
+	command = [[ let s:std_in=1 ]],
+})
+vim.api.nvim_create_autocmd("VimEnter", {
+	pattern = "*",
+	command = [[ if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif ]],
+})
 
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-]])
+-- Exit Vim if NERDTree is the only window remaining in the only tab.
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif ]],
+})
 
 -- LSP-Status
 local lsp_status = require("lsp-status")
@@ -124,13 +134,21 @@ require("trouble").setup()
 
 require("legendary").setup()
 
+require("nvim-treesitter.configs").setup({
+	ensure_installed = { "c", "cpp", "rust", "lua" },
+	highlight = {
+		enable = true,
+	},
+})
+
 local opt = { noremap = true, silent = true }
-local helpers = require("legendary.helpers")
 
 do
+	local helpers = require("legendary.helpers")
 	local keymaps = {
 		-- general
 		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
+		{ "<leader>tc", "<cmd>tabclose<CR>", description = "Close Tab", opts = opt },
 		-- lspconfig
 		{ "gj", vim.diagnostic.goto_prev, description = "Diagnostics go to previous", opts = opt },
 		{ "gk", vim.diagnostic.goto_next, description = "Diagnostics go to next", opts = opt },
