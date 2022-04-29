@@ -316,11 +316,10 @@ local opts = {
 
 -- Register a handler that will be called for each installed server when it's ready (i.e.
 -- when installation is finished or if the server is already installed).
+require("rust-tools").setup({ server = opts })
 
 for _, server in ipairs(lsp_installer.get_installed_servers()) do
 	if server.name ~= "rust_analyzer" then
 		lsp_config[server.name].setup(opts)
-	else
-		require("rust-tools").setup(opts)
 	end
 end
