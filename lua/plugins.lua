@@ -48,6 +48,7 @@ function packer:startup()
 			requires = {
 				{ "nvim-lua/plenary.nvim" },
 				{ "stevearc/dressing.nvim" },
+				{ "nvim-telescope/telescope-symbols.nvim" },
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			},
 		})

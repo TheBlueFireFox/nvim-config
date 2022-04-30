@@ -124,7 +124,11 @@ require("dressing").setup({
 -- https://github.com/nvim-telescope/telescope.nvim#themes
 -- https://github.com/nvim-telescope/telescope.nvim#layout-display
 -- https://github.com/nvim-telescope/telescope.nvim#pickers
-require("telescope").setup({})
+require("telescope").setup({
+	defaults = {
+		prompt_prefix = " ",
+	},
+})
 
 -- To get fzf loaded and working with telescope, you need to call
 -- load_extension, somewhere after setup function:
@@ -135,9 +139,26 @@ require("trouble").setup()
 require("legendary").setup()
 
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "c", "cpp", "rust", "lua" },
+	ensure_installed = {
+		"bash",
+		"bibtex",
+		"cmake",
+		"make",
+		"c",
+		"cpp",
+		"css",
+		"dockerfile",
+		"html",
+		"javascript",
+		"json",
+		"rust",
+		"lua",
+		"toml",
+		"yaml",
+	},
 	highlight = {
 		enable = true,
+		additional_vim_regex_highlighting = false,
 	},
 })
 
