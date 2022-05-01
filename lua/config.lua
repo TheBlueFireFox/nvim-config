@@ -29,6 +29,14 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.opt.signcolumn = "number"
 
 ---- theme
+
+-- change diagnostics error prefix symbol
+vim.diagnostic.config({
+    virtual_text = {
+        prefix = "◯ "
+    },
+})
+
 -- Available values: 'material', 'mix', 'original'
 vim.g.gruvbox_material_palette = "material"
 
@@ -171,6 +179,7 @@ do
 		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
 		{ "<leader>tc", "<cmd>tabclose<CR>", description = "Close Tab", opts = opt },
 		-- lspconfig
+		{ "<leader>e", vim.diagnostic.open_float, description = "Open diagnostic window", opts = opt },
 		{ "gj", vim.diagnostic.goto_prev, description = "Diagnostics go to previous", opts = opt },
 		{ "gk", vim.diagnostic.goto_next, description = "Diagnostics go to next", opts = opt },
 		-- autoformat
