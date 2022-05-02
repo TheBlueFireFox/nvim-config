@@ -32,9 +32,9 @@ vim.opt.signcolumn = "number"
 
 -- change diagnostics error prefix symbol
 vim.diagnostic.config({
-    virtual_text = {
-        prefix = "◯ "
-    },
+	virtual_text = {
+		prefix = "◯ ",
+	},
 })
 
 -- Available values: 'material', 'mix', 'original'
@@ -103,6 +103,21 @@ require("bufferline").setup({
 		mode = "tabs",
 		diagnostics = "nvim_lsp",
 		separator_style = "slant",
+		sort_by = "tabs",
+		offsets = {
+			{
+				filetype = "NERDTree",
+				text = "File Explorer",
+				highlight = "Directory",
+				text_align = "left",
+			},
+			{
+				filetype = "nerdtree",
+				text = "File Explorer",
+				highlight = "Directory",
+				text_align = "left",
+			},
+		},
 	},
 })
 
