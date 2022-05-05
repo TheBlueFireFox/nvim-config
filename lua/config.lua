@@ -193,6 +193,7 @@ do
 		-- general
 		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
 		{ "<leader>tc", "<cmd>tabclose<CR>", description = "Close Tab", opts = opt },
+		{ "<leader>h", "<cmd>nohlsearch<CR>", description = "Stop hightlighting", opts = opt },
 		-- lspconfig
 		{ "<leader>e", vim.diagnostic.open_float, description = "Open diagnostic window", opts = opt },
 		{ "gj", vim.diagnostic.goto_prev, description = "Diagnostics go to previous", opts = opt },
