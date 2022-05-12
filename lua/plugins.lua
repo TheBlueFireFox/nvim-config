@@ -1,7 +1,7 @@
 local packer = { bootstrap = false, callback = nil }
 
 function packer:startup()
-	local pframe = require("packer").startup(function(use)
+	self.packer = require("packer").startup(function(use)
 		-- Package manager
 		use("wbthomason/packer.nvim")
 
@@ -88,8 +88,6 @@ function packer:startup()
 			require("packer").sync()
 		end
 	end)
-
-	self.packer = pframe
 end
 
 function packer:install()
@@ -98,7 +96,9 @@ function packer:install()
 	local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 	if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-		self.bootstrap = vim.fn.system({
+		self.bootstrap = true
+
+		vim.fn.system({
 			"git",
 			"clone",
 			"--depth",
@@ -111,13 +111,16 @@ function packer:install()
 	end
 end
 
-local function RandomVariable(length)
-	math.randomseed(os.time())
-	local res = ""
-	for _ = 1, length do
-		res = res .. string.char(math.random(97, 122))
-	end
-	return res
+function packer:autorun()
+	--  run :PackerCompile whenever plugins.lua is updated with an autocommand:
+	local packer_autoconf = vim.api.nvim_create_augroup("packer_user_config", { clear = true })
+	vim.api.nvim_create_autocmd("BufWritePost", {
+		pattern = "plugins.lua",
+		command = "source <afile> | PackerCompile",
+		group = packer_autoconf,
+	})
+
+	self.callback()
 end
 
 function packer:run()
@@ -125,28 +128,18 @@ function packer:run()
 
 	self:startup()
 
-	--  run :PackerCompile whenever plugins.lua is updated with an autocommand:
-	vim.cmd([[
-        augroup packer_user_config
-          autocmd!
-          autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-        augroup end
-    ]])
-
 	if not self.bootstrap then
-		self.callback()
+		self:autorun()
 		return
 	end
-	-- generate random string as a global variable
-	-- so that the global namespace will not be poluted
-	-- too much
-	local name = RandomVariable(20)
-	_G[name] = function()
-		require("packer.display").quit()
-		self.callback()
-	end
 
-	vim.cmd("autocmd User PackerComplete lua " .. name .. "()")
+	vim.api.nvim_create_autocmd("User", {
+		pattern = "PackerComplete",
+		callback = function()
+			require("packer.display").quit()
+			self:autorun()
+		end,
+	})
 end
 
 function packer:new(o)
