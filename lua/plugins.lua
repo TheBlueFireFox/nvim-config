@@ -15,9 +15,22 @@ function packer:startup()
 		-- usefull
 		use("windwp/nvim-autopairs")
 		use("sbdchd/neoformat")
-		use("Yggdroot/indentLine")
 		use("mrjones2014/legendary.nvim")
 		use("stevearc/dressing.nvim")
+
+		-- dashboard
+		use({
+			"goolord/alpha-nvim",
+			requires = {
+				{ "kyazdani42/nvim-web-devicons" },
+			},
+		})
+		use({
+			"Shatur/neovim-session-manager",
+			requires = {
+				{ "nvim-lua/plenary.nvim" },
+			},
+		})
 
 		-- code completion
 		use("hrsh7th/cmp-nvim-lsp")
@@ -28,7 +41,9 @@ function packer:startup()
 		use("hrsh7th/cmp-nvim-lua")
 		use({
 			"petertriho/cmp-git",
-			requires = "nvim-lua/plenary.nvim",
+			requires = {
+				{ "nvim-lua/plenary.nvim" },
+			},
 		})
 
 		-- snippets
@@ -41,7 +56,9 @@ function packer:startup()
 		-- code actions
 		use({
 			"folke/trouble.nvim",
-			requires = "kyazdani42/nvim-web-devicons",
+			requires = {
+				{ "kyazdani42/nvim-web-devicons" },
+			},
 		})
 		use({
 			"nvim-telescope/telescope.nvim",

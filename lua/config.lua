@@ -53,7 +53,7 @@ vim.g.tokyonight_style = "night"
 -- vim.cmd("colorscheme gruvbox-material")
 vim.cmd("colorscheme tokyonight")
 
--- Other configurations
+---- Other configurations
 -- have Vim jump to the last position when reopening a file
 vim.api.nvim_create_autocmd(
 	"BufReadPost",
@@ -61,16 +61,6 @@ vim.api.nvim_create_autocmd(
 )
 
 --- NERDTree
--- Start NERDTree, unless a file or session is specified, eg. vim -S session_file.vim.
-vim.api.nvim_create_autocmd("StdinReadPre", {
-	pattern = "*",
-	command = [[ let s:std_in=1 ]],
-})
-vim.api.nvim_create_autocmd("VimEnter", {
-	pattern = "*",
-	command = [[ if argc() == 0 && !exists('s:std_in') && v:this_session == '' | NERDTree | endif ]],
-})
-
 -- Exit Vim if NERDTree is the only window remaining in the only tab.
 vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = "*",
@@ -119,6 +109,38 @@ require("bufferline").setup({
 			},
 		},
 	},
+})
+
+-- Dashboard
+do
+	local conf = require("alpha.themes.dashboard")
+	local buttons = {
+		type = "group",
+		val = {
+			conf.button("e", "  New file", "<cmd>ene <CR>"),
+			conf.button(vim.g.mapleader .. "ff", "  Find file"),
+			conf.button(vim.g.mapleader .. "fh", "  Recently opened files"),
+			conf.button(vim.g.mapleader .. "fg", "  Live Grep"),
+			conf.button(vim.g.mapleader .. "sl", "  Open last session"),
+		},
+		opts = {
+			spacing = 1,
+		},
+	}
+
+	conf.config.layout = {
+		{ type = "padding", val = 2 },
+		conf.section.header,
+		{ type = "padding", val = 2 },
+		buttons,
+		conf.section.footer,
+	}
+
+	require("alpha").setup(conf.config)
+end
+
+require("session_manager").setup({
+	autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 })
 
 require("lualine").setup({
@@ -240,6 +262,13 @@ do
 			"<leader>ll",
 			helpers.lazy_required_fn("legendary", "find"),
 			description = "Legendary: search all",
+			opts = opt,
+		},
+		-- load last session
+		{
+			"<leader>sl",
+			"<cmd>SessionManager load_last_session<CR>",
+			description = "Open last session",
 			opts = opt,
 		},
 	}
