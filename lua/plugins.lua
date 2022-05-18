@@ -46,6 +46,15 @@ function packer:startup()
 			},
 		})
 
+		use({
+			"saecki/crates.nvim",
+			event = { "BufRead Cargo.toml" },
+			requires = { { "nvim-lua/plenary.nvim" } },
+			config = function()
+				require("crates").setup()
+			end,
+		})
+
 		-- snippets
 		use("L3MON4D3/LuaSnip")
 		use("rafamadriz/friendly-snippets")

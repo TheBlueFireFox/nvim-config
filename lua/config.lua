@@ -143,6 +143,19 @@ require("session_manager").setup({
 	autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 })
 
+-- Crates.nvim (rust helper)
+-- autocmd FileType toml lua require('cmp').setup.buffer { sources = { { name = 'crates' } } }
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "toml",
+	callback = function()
+		require("cmp").setup.buffer({
+			sources = {
+				{ name = "crates" },
+			},
+		})
+	end,
+})
+
 require("lualine").setup({
 	options = {
 		theme = "auto",
