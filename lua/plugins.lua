@@ -16,7 +16,6 @@ function packer:startup()
 		use("windwp/nvim-autopairs")
 		use("sbdchd/neoformat")
 		use("mrjones2014/legendary.nvim")
-		use("stevearc/dressing.nvim")
 
 		-- dashboard
 		use({
@@ -74,6 +73,7 @@ function packer:startup()
 			requires = {
 				{ "nvim-lua/plenary.nvim" },
 				{ "stevearc/dressing.nvim" },
+				{ "nvim-telescope/telescope-ui-select.nvim" },
 				{ "nvim-telescope/telescope-symbols.nvim" },
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			},
