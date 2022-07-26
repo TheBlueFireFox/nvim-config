@@ -28,14 +28,19 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 -- force vim to use a single column for both number and error hightlighting
 vim.opt.signcolumn = "number"
 
+
 ---- theme
 
--- change diagnostics error prefix symbol
+-- Disable virtual_text since it's redundant due to lsp_lines.
 vim.diagnostic.config({
-	virtual_text = {
-		prefix = "◯ ",
-	},
+	virtual_text = false,
 })
+-- -- change diagnostics error prefix symbol
+-- vim.diagnostic.config({
+-- 	virtual_text = {
+-- 		prefix = "◯ ",
+-- 	},
+-- })
 
 -- Available values: 'material', 'mix', 'original'
 vim.g.gruvbox_material_palette = "material"
@@ -266,6 +271,8 @@ do
 			description = "Telescope: Help Tags",
 			opts = opt,
 		},
+        -- toggle lsp lines
+		{ "<leader>tl", require("lsp_lines").toggle, description = "Toggle lsp_lines", opts = opt },
 		-- nerdtree shortcut
 		{ "<leader>ne", "<cmd>NERDTreeToggle<cr>", description = "Open NERDTree", opts = opt },
 		-- trouble shortcut
@@ -404,26 +411,30 @@ do
 	})
 end
 
-local lsp_config = require("lspconfig")
-local lsp_installer = require("nvim-lsp-installer")
+require("mason").setup({})
+require("lsp_lines").setup({})
 
-lsp_installer.setup({})
+do
+	local lsp_config = require("lspconfig")
+	local lsp_installer = require("mason-lspconfig")
+	lsp_installer.setup({})
 
-local opts = {
-	on_attach = on_attach,
-	capabilities = require("cmp_nvim_lsp").update_capabilities(
-		-- Setup lspconfig.
-		vim.lsp.protocol.make_client_capabilities()
-	),
-}
+	lsp_config.util.default_config = vim.tbl_extend("force", lsp_config.util.default_config, {
+		on_attach = on_attach,
+		capabilities = require("cmp_nvim_lsp").update_capabilities(
+			-- Setup lspconfig.
+			vim.lsp.protocol.make_client_capabilities()
+		),
+	})
 
--- Register a handler that will be called for each installed server when it's ready (i.e.
--- when installation is finished or if the server is already installed).
+	-- Register a handler that will be called for each installed server when it's ready (i.e.
+	-- when installation is finished or if the server is already installed).
 
-for _, server in ipairs(lsp_installer.get_installed_servers()) do
-	if server.name == "rust_analyzer" then
-		require("rust-tools").setup({ server = opts })
-	else
-		lsp_config[server.name].setup(opts)
+	for _, server in ipairs(lsp_installer.get_installed_servers()) do
+		if server == "rust_analyzer" then
+			require("rust-tools").setup({})
+		else
+			lsp_config[server].setup({})
+		end
 	end
 end

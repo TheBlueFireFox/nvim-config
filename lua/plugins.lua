@@ -7,15 +7,17 @@ function packer:startup()
 
 		-- Collection of configurations for the built-in LSP client
 		use("neovim/nvim-lspconfig")
-		use("williamboman/nvim-lsp-installer")
-
-		-- for rust specific tools
-		use("simrat39/rust-tools.nvim")
+		use("williamboman/mason.nvim")
+		use("williamboman/mason-lspconfig.nvim")
+        
+        -- rust analyzer super powers
+        use("simrat39/rust-tools.nvim")
 
 		-- usefull
 		use("windwp/nvim-autopairs")
-		use("sbdchd/neoformat")
+        use("sbdchd/neoformat")
 		use("mrjones2014/legendary.nvim")
+        use("https://git.sr.ht/~whynothugo/lsp_lines.nvim")
 
 		-- dashboard
 		use({
