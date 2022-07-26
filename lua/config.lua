@@ -28,7 +28,6 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 -- force vim to use a single column for both number and error hightlighting
 vim.opt.signcolumn = "number"
 
-
 ---- theme
 
 -- Disable virtual_text since it's redundant due to lsp_lines.
@@ -142,14 +141,13 @@ do
 	}
 
 	require("alpha").setup(conf.config)
+
+	require("session_manager").setup({
+		autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
+	})
 end
 
-require("session_manager").setup({
-	autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
-})
-
 -- Crates.nvim (rust helper)
--- autocmd FileType toml lua require('cmp').setup.buffer { sources = { { name = 'crates' } } }
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "toml",
 	callback = function()
@@ -271,12 +269,12 @@ do
 			description = "Telescope: Help Tags",
 			opts = opt,
 		},
-        -- toggle lsp lines
-		{ "<leader>tl", require("lsp_lines").toggle, description = "Toggle lsp_lines", opts = opt },
+		-- toggle lsp lines
+		{ "<leader>tl", require("lsp_lines").toggle, description = "Toggle Lsp Lines", opts = opt },
 		-- nerdtree shortcut
 		{ "<leader>ne", "<cmd>NERDTreeToggle<cr>", description = "Open NERDTree", opts = opt },
 		-- trouble shortcut
-		{ "<leader>tr", "<cmd>TroubleToggle<cr>", description = "Trouble Toggle", opts = opt },
+		{ "<leader>tr", "<cmd>TroubleToggle<cr>", description = "Toggle Trouble", opts = opt },
 		-- legendary
 		{
 			"<leader>l",
