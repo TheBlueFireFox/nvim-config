@@ -9,15 +9,15 @@ function packer:startup()
 		use("neovim/nvim-lspconfig")
 		use("williamboman/mason.nvim")
 		use("williamboman/mason-lspconfig.nvim")
-        
-        -- rust analyzer super powers
-        use("simrat39/rust-tools.nvim")
+
+		-- rust analyzer super powers
+		use("simrat39/rust-tools.nvim")
 
 		-- usefull
 		use("windwp/nvim-autopairs")
-        use("sbdchd/neoformat")
+		use("sbdchd/neoformat")
 		use("mrjones2014/legendary.nvim")
-        use("https://git.sr.ht/~whynothugo/lsp_lines.nvim")
+		use("https://git.sr.ht/~whynothugo/lsp_lines.nvim")
 
 		-- dashboard
 		use({

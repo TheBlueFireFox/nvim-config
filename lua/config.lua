@@ -414,21 +414,18 @@ require("lsp_lines").setup({})
 
 do
 	local lsp_config = require("lspconfig")
-	local lsp_installer = require("mason-lspconfig")
-	lsp_installer.setup({})
+	local mason_config = require("mason-lspconfig")
+	mason_config.setup({})
 
 	lsp_config.util.default_config = vim.tbl_extend("force", lsp_config.util.default_config, {
 		on_attach = on_attach,
-		capabilities = require("cmp_nvim_lsp").update_capabilities(
-			-- Setup lspconfig.
-			vim.lsp.protocol.make_client_capabilities()
-		),
+		capabilities = require("cmp_nvim_lsp").default_capabilities(),
 	})
 
 	-- Register a handler that will be called for each installed server when it's ready (i.e.
 	-- when installation is finished or if the server is already installed).
 
-	for _, server in ipairs(lsp_installer.get_installed_servers()) do
+	for _, server in ipairs(mason_config.get_installed_servers()) do
 		if server == "rust_analyzer" then
 			require("rust-tools").setup({})
 		else
