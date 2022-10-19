@@ -270,7 +270,7 @@ do
 			opts = opt,
 		},
 		-- toggle lsp lines
-		{ "<leader>tl", require("lsp_lines").toggle, description = "Toggle Lsp Lines", opts = opt },
+		-- { "<leader>tl", require("lsp_lines").toggle, description = "Toggle Lsp Lines", opts = opt },
 		-- nerdtree shortcut
 		{ "<leader>ne", "<cmd>NERDTreeToggle<cr>", description = "Open NERDTree", opts = opt },
 		-- trouble shortcut
@@ -410,7 +410,7 @@ do
 end
 
 require("mason").setup({})
-require("lsp_lines").setup({})
+-- require("lsp_lines").setup({})
 
 do
 	local lsp_config = require("lspconfig")
