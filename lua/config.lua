@@ -298,7 +298,11 @@ do
 	}
 
 	require("legendary").bind_keymaps(keymaps)
+
+    -- special terminal one
+    vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", opt)
 end
+
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
