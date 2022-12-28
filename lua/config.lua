@@ -174,8 +174,10 @@ require("lualine").setup({
 
 require("dressing").setup({
 	input = {
-		-- Window transparency (0-100)
-		winblend = 0,
+        win_options = {
+            -- Window transparency (0-100)
+            winblend = 0,
+        }
 	},
 	select = {
 		enabled = false,
@@ -203,8 +205,6 @@ require("telescope").load_extension("ui-select")
 
 require("trouble").setup()
 
-require("legendary").setup()
-
 require("nvim-treesitter.configs").setup({
 	ensure_installed = {
 		"bash",
@@ -219,6 +219,7 @@ require("nvim-treesitter.configs").setup({
 		"javascript",
 		"json",
 		"rust",
+        "haskell",
 		"lua",
 		"toml",
 		"yaml",
@@ -229,10 +230,11 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
-local opt = { noremap = true, silent = true }
+require("legendary").setup({})
 
+local opt = { noremap = true, silent = true }
 do
-	local helpers = require("legendary.helpers")
+	local helpers = require("legendary.toolbox")
 	local keymaps = {
 		-- general
 		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
@@ -297,7 +299,7 @@ do
 		},
 	}
 
-	require("legendary").bind_keymaps(keymaps)
+	require("legendary").keymaps(keymaps)
 
     -- special terminal one
     vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", opt)
@@ -328,7 +330,7 @@ local on_attach = function(client, bufnr)
 		{ "gr", vim.lsp.buf.references, description = "List all references", opts = opt },
 	}
 
-	require("legendary").bind_keymaps(keymaps)
+	require("legendary").keymaps(keymaps)
 
 	lsp_status.on_attach(client)
 end
@@ -431,7 +433,15 @@ do
 
 	for _, server in ipairs(mason_config.get_installed_servers()) do
 		if server == "rust_analyzer" then
-			require("rust-tools").setup({})
+			require("rust-tools").setup({
+              server = {
+                settings = {
+                  ["rust-analyzer"] = {
+                    inlayHints = { locationLinks = false },
+                  },
+                },
+              },
+            })
 		else
 			lsp_config[server].setup({})
 		end

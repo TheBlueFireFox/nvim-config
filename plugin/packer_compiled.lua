@@ -158,11 +158,6 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lsp-status.nvim",
     url = "https://github.com/nvim-lua/lsp-status.nvim"
   },
-  ["lsp_lines.nvim"] = {
-    loaded = true,
-    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lsp_lines.nvim",
-    url = "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
-  },
   ["lsp_signature.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim",
