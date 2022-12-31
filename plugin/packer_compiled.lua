@@ -148,6 +148,11 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/gruvbox-material",
     url = "https://github.com/sainnhe/gruvbox-material"
   },
+  ["haskell-tools.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/haskell-tools.nvim",
+    url = "https://github.com/MrcJkb/haskell-tools.nvim"
+  },
   ["legendary.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/legendary.nvim",

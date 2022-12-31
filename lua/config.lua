@@ -36,9 +36,9 @@ vim.diagnostic.config({
 })
 -- -- change diagnostics error prefix symbol
 -- vim.diagnostic.config({
--- 	virtual_text = {
--- 		prefix = "◯ ",
--- 	},
+--  virtual_text = {
+--      prefix = "◯ ",
+--  },
 -- })
 
 -- Available values: 'material', 'mix', 'original'
@@ -174,10 +174,10 @@ require("lualine").setup({
 
 require("dressing").setup({
 	input = {
-        win_options = {
-            -- Window transparency (0-100)
-            winblend = 0,
-        }
+		win_options = {
+			-- Window transparency (0-100)
+			winblend = 0,
+		},
 	},
 	select = {
 		enabled = false,
@@ -219,7 +219,7 @@ require("nvim-treesitter.configs").setup({
 		"javascript",
 		"json",
 		"rust",
-        "haskell",
+		"haskell",
 		"lua",
 		"toml",
 		"yaml",
@@ -301,10 +301,9 @@ do
 
 	require("legendary").keymaps(keymaps)
 
-    -- special terminal one
-    vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", opt)
+	-- special terminal one
+	vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", opt)
 end
-
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -416,7 +415,6 @@ do
 end
 
 require("mason").setup({})
--- require("lsp_lines").setup({})
 
 do
 	local lsp_config = require("lspconfig")
@@ -430,18 +428,40 @@ do
 
 	-- Register a handler that will be called for each installed server when it's ready (i.e.
 	-- when installation is finished or if the server is already installed).
-
 	for _, server in ipairs(mason_config.get_installed_servers()) do
 		if server == "rust_analyzer" then
 			require("rust-tools").setup({
-              server = {
-                settings = {
-                  ["rust-analyzer"] = {
-                    inlayHints = { locationLinks = false },
-                  },
-                },
-              },
-            })
+				server = {
+					on_attach = on_attach,
+					capabilities = require("cmp_nvim_lsp").default_capabilities(),
+					settings = {
+						["rust-analyzer"] = {
+							inlayHints = { locationLinks = false },
+						},
+					},
+				},
+			})
+		elseif server == "hls" then
+			require("haskell-tools").setup({
+				hls = {
+					on_attach = function(client, buffnr)
+						local helpers = require("legendary.toolbox")
+						local opts = vim.tbl_extend("keep", opt, { buffer = buffnr })
+						local keymaps = {
+							{ "<leader>ca", vim.lsp.codelens.run, description = "Run The CodeLens", opts = opts },
+							{
+								"<leader>hs",
+								helpers.lazy_required_fn("haskell-tools", "hoogle.hoogle_signature"),
+								description = "Haskell: Hoogle signature",
+								opts = opts,
+							},
+						}
+						require("legendary").keymaps(keymaps)
+						on_attach(client, buffnr)
+					end,
+					capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				},
+			})
 		else
 			lsp_config[server].setup({})
 		end

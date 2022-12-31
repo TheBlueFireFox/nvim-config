@@ -13,6 +13,9 @@ function packer:startup()
 		-- rust analyzer super powers
 		use("simrat39/rust-tools.nvim")
 
+		-- haskell super powers
+        use('MrcJkb/haskell-tools.nvim')
+
 		-- usefull
 		use("windwp/nvim-autopairs")
 		use("sbdchd/neoformat")
