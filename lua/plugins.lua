@@ -14,7 +14,7 @@ function packer:startup()
 		use("simrat39/rust-tools.nvim")
 
 		-- haskell super powers
-        use('MrcJkb/haskell-tools.nvim')
+		use("MrcJkb/haskell-tools.nvim")
 
 		-- usefull
 		use("windwp/nvim-autopairs")
@@ -83,12 +83,12 @@ function packer:startup()
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			},
 		})
-        use({
-            "nvim-tree/nvim-tree.lua",
-		    requires = {
-		    	{ "ryanoasis/vim-devicons" },
-		    }
-        })
+		use({
+			"nvim-tree/nvim-tree.lua",
+			requires = {
+				{ "ryanoasis/vim-devicons" },
+			},
+		})
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
@@ -106,10 +106,11 @@ function packer:startup()
 			},
 		})
 		use({
-			"akinsho/bufferline.nvim",
-			tag = "*",
-			requires = { "kyazdani42/nvim-web-devicons" },
-		})
+            "akinsho/bufferline.nvim",
+            tag = "*",
+            requires = "nvim-tree/nvim-web-devicons"
+        })
+
 		use("nvim-lua/lsp-status.nvim")
 
 		-- Automatically set up your configuration after cloning packer.nvim
