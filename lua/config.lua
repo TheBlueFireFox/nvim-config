@@ -34,12 +34,12 @@ vim.opt.signcolumn = "number"
 vim.diagnostic.config({
 	virtual_text = false,
 })
--- -- change diagnostics error prefix symbol
--- vim.diagnostic.config({
---  virtual_text = {
---      prefix = "◯ ",
---  },
--- })
+-- change diagnostics error prefix symbol
+vim.diagnostic.config({
+ virtual_text = {
+     prefix = "◯ ",
+ },
+})
 
 -- Available values: 'material', 'mix', 'original'
 vim.g.gruvbox_material_palette = "material"
@@ -57,6 +57,29 @@ vim.g.tokyonight_style = "night"
 -- vim.cmd("colorscheme gruvbox-material")
 vim.cmd("colorscheme tokyonight")
 
+-- examples for your init.lua
+
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
+
+-- empty setup using defaults
+require("nvim-tree").setup()
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
+
 ---- Other configurations
 -- have Vim jump to the last position when reopening a file
 vim.api.nvim_create_autocmd(
@@ -66,10 +89,10 @@ vim.api.nvim_create_autocmd(
 
 --- NERDTree
 -- Exit Vim if NERDTree is the only window remaining in the only tab.
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*",
-	command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif ]],
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+-- 	pattern = "*",
+-- 	command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif ]],
+-- })
 
 -- LSP-Status
 local lsp_status = require("lsp-status")
@@ -237,7 +260,7 @@ do
 	local helpers = require("legendary.toolbox")
 	local keymaps = {
 		-- general
-		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NERDTreeFocus<CR>", description = "New Tab", opts = opt },
+		{ "<leader>te", "<cmd>tabnew<CR><bar><cmd>NvimTreeFocus<CR>", description = "New Tab", opts = opt },
 		{ "<leader>tc", "<cmd>tabclose<CR>", description = "Close Tab", opts = opt },
 		{ "<leader>h", "<cmd>nohlsearch<CR>", description = "Stop hightlighting", opts = opt },
 		-- lspconfig
@@ -274,7 +297,7 @@ do
 		-- toggle lsp lines
 		-- { "<leader>tl", require("lsp_lines").toggle, description = "Toggle Lsp Lines", opts = opt },
 		-- nerdtree shortcut
-		{ "<leader>ne", "<cmd>NERDTreeToggle<cr>", description = "Open NERDTree", opts = opt },
+		{ "<leader>ne", "<cmd>NvimTreeToggle<cr>", description = "Open NERDTree", opts = opt },
 		-- trouble shortcut
 		{ "<leader>tr", "<cmd>TroubleToggle<cr>", description = "Toggle Trouble", opts = opt },
 		-- legendary
@@ -415,6 +438,7 @@ do
 end
 
 require("mason").setup({})
+
 
 do
 	local lsp_config = require("lspconfig")

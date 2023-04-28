@@ -83,13 +83,12 @@ function packer:startup()
 				{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 			},
 		})
-		use({
-			"preservim/nerdtree",
-			requires = {
-				{ "ryanoasis/vim-devicons" },
-				{ "Xuyuanp/nerdtree-git-plugin" },
-			},
-		})
+        use({
+            "nvim-tree/nvim-tree.lua",
+		    requires = {
+		    	{ "ryanoasis/vim-devicons" },
+		    }
+        })
 		use({
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
