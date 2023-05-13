@@ -66,10 +66,6 @@ vim.g.loaded_netrwPlugin = 1
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
 
--- empty setup using defaults
-require("nvim-tree").setup()
-
--- OR setup with some options
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   renderer = {
@@ -77,6 +73,11 @@ require("nvim-tree").setup({
   },
   filters = {
     dotfiles = true,
+  },
+  actions = {
+    open_file = {
+      quit_on_open = true,
+    },
   },
 })
 
@@ -87,11 +88,11 @@ vim.api.nvim_create_autocmd(
 	{ command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] }
 )
 
---- NERDTree
+--- NvimTree
 -- Exit Vim if NERDTree is the only window remaining in the only tab.
 -- vim.api.nvim_create_autocmd("BufEnter", {
--- 	pattern = "*",
--- 	command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif ]],
+--     pattern = "*",
+--     command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NvimTree') && b:NvimTree.isTabTree() | quit | endif ]],
 -- })
 
 -- LSP-Status
@@ -121,15 +122,16 @@ require("bufferline").setup({
 		diagnostics = "nvim_lsp",
 		separator_style = "slant",
 		sort_by = "tabs",
+        buffer_close_icon = '',
 		offsets = {
 			{
-				filetype = "NERDTree",
+				filetype = "NvimTree",
 				text = "File Explorer",
 				highlight = "Directory",
 				text_align = "left",
 			},
 			{
-				filetype = "nerdtree",
+				filetype = "nvimtree",
 				text = "File Explorer",
 				highlight = "Directory",
 				text_align = "left",
@@ -297,7 +299,7 @@ do
 		-- toggle lsp lines
 		-- { "<leader>tl", require("lsp_lines").toggle, description = "Toggle Lsp Lines", opts = opt },
 		-- nerdtree shortcut
-		{ "<leader>ne", "<cmd>NvimTreeToggle<cr>", description = "Open NERDTree", opts = opt },
+		{ "<leader>ne", "<cmd>NvimTreeToggle<cr>", description = "Open NvimTree", opts = opt },
 		-- trouble shortcut
 		{ "<leader>tr", "<cmd>TroubleToggle<cr>", description = "Toggle Trouble", opts = opt },
 		-- legendary
