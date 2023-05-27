@@ -122,7 +122,6 @@ require("bufferline").setup({
 		diagnostics = "nvim_lsp",
 		separator_style = "slant",
 		sort_by = "tabs",
-        buffer_close_icon = '',
 		offsets = {
 			{
 				filetype = "NvimTree",
