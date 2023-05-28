@@ -66,6 +66,26 @@ vim.g.loaded_netrwPlugin = 1
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
 
+-- allow for clipboard support on wsl
+if require("extra").is_wsl then 
+   vim.cmd([[
+   " WSL yank support
+    set clipboard+=unnamedplus
+    let g:clipboard = {
+          \   'name': 'win32yank-wsl',
+          \   'copy': {
+          \      '+': 'win32yank.exe -i --crlf',
+          \      '*': 'win32yank.exe -i --crlf',
+          \    },
+          \   'paste': {
+          \      '+': 'win32yank.exe -o --lf',
+          \      '*': 'win32yank.exe -o --lf',
+          \   },
+          \   'cache_enabled': 0,
+          \ }
+   ]]) 
+end 
+
 require("nvim-tree").setup({
   sort_by = "case_sensitive",
   renderer = {
@@ -146,10 +166,10 @@ do
 		type = "group",
 		val = {
 			conf.button("e", "  New file", "<cmd>ene <CR>"),
-			conf.button(vim.g.mapleader .. "ff", "  Find file"),
-			conf.button(vim.g.mapleader .. "fh", "  Recently opened files"),
-			conf.button(vim.g.mapleader .. "fg", "  Live Grep"),
-			conf.button(vim.g.mapleader .. "sl", "  Open last session"),
+			conf.button(vim.g.mapleader .. "ff", "󰍉  Find file"),
+			conf.button(vim.g.mapleader .. "fh", "󰈢  Recently opened files"),
+			conf.button(vim.g.mapleader .. "fg", "󰈬  Live Grep"),
+			conf.button(vim.g.mapleader .. "sl", "󰁯  Open last session"),
 		},
 		opts = {
 			spacing = 1,
