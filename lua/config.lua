@@ -37,7 +37,7 @@ vim.diagnostic.config({
 -- change diagnostics error prefix symbol
 vim.diagnostic.config({
  virtual_text = {
-     prefix = "◯ ",
+     -- prefix = "◯ ",
  },
 })
 
@@ -83,6 +83,8 @@ if require("extra").is_wsl then
           \   },
           \   'cache_enabled': 0,
           \ }
+   " get browser working
+   let g:netrw_browsex_viewer="cmd.exe /C start"
    ]]) 
 end 
 
@@ -288,8 +290,6 @@ do
 		{ "<leader>e", vim.diagnostic.open_float, description = "Open diagnostic window", opts = opt },
 		{ "gj", vim.diagnostic.goto_prev, description = "Diagnostics go to previous", opts = opt },
 		{ "gk", vim.diagnostic.goto_next, description = "Diagnostics go to next", opts = opt },
-		-- autoformat
-		{ "<leader>F", "<cmd>Neoformat<CR>", description = "Format File", opts = opt },
 		-- find files using Telescope command-line sugar.
 		{
 			"<leader>ff",
@@ -372,6 +372,18 @@ local on_attach = function(client, bufnr)
 		{ "gs", vim.lsp.buf.signature_help, description = "Show Signature Help", opts = opt },
 		{ "gr", vim.lsp.buf.references, description = "List all references", opts = opt },
 	}
+	
+    -- format
+    if client.supports_method("textDocument/formatting") then
+            -- Define formatting autocmd or mapping
+        table.insert(keymaps, {
+            "<leader>F", vim.lsp.buf.format, description = "Format File", opts = opt 
+        })
+    else
+        table.insert(keymaps, {
+            "<leader>F", "<cmd>Neoformat<CR>", description = "Format File", opts = opt 
+        })
+    end
 
 	require("legendary").keymaps(keymaps)
 
