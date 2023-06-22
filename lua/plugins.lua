@@ -7,8 +7,14 @@ function packer:startup()
 
         -- Collection of configurations for the built-in LSP client
         use("neovim/nvim-lspconfig")
-        use("williamboman/mason.nvim")
+        use({
+            "williamboman/mason.nvim",
+            run = ":MasonUpdate"
+        })
         use("williamboman/mason-lspconfig.nvim")
+
+        -- lsp inlay hints
+        use("lvimuser/lsp-inlayhints.nvim")
 
         -- rust analyzer super powers
         use("simrat39/rust-tools.nvim")

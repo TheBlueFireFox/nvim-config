@@ -117,6 +117,7 @@ vim.api.nvim_create_autocmd(
 --     command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NvimTree') && b:NvimTree.isTabTree() | quit | endif ]],
 -- })
 
+
 -- LSP-Status
 local lsp_status = require("lsp-status")
 -- completion_customize_lsp_label as used in completion-nvim
@@ -283,20 +284,49 @@ do
     local helpers = require("legendary.toolbox")
     local keymaps = {
         -- general
-        { "<leader>te", "<cmd>tabnew<CR><bar><cmd>NvimTreeFocus<CR>", description = "New Tab",                    opts =
-        opt },
-        { "<leader>tc", "<cmd>tabclose<CR>",                          description = "Close Tab",                  opts =
-        opt },
-        { "<leader>h",  "<cmd>nohlsearch<CR>",                        description = "Stop hightlighting",         opts =
-        opt },
+        {
+            "<leader>te",
+            "<cmd>tabnew<CR><bar><cmd>NvimTreeFocus<CR>",
+            description = "New Tab",
+            opts =
+                opt
+        },
+        {
+            "<leader>tc",
+            "<cmd>tabclose<CR>",
+            description = "Close Tab",
+            opts =
+                opt
+        },
+        {
+            "<leader>h",
+            "<cmd>nohlsearch<CR>",
+            description = "Stop hightlighting",
+            opts =
+                opt
+        },
         -- lspconfig
-        { "<leader>e",  vim.diagnostic.open_float,                    description = "Open diagnostic window",     opts =
-        opt },
-        { "gj",         vim.diagnostic.goto_prev,                     description = "Diagnostics go to previous",
-                                                                                                                      opts =
-            opt },
-        { "gk",         vim.diagnostic.goto_next,                     description = "Diagnostics go to next",     opts =
-        opt },
+        {
+            "<leader>e",
+            vim.diagnostic.open_float,
+            description = "Open diagnostic window",
+            opts =
+                opt
+        },
+        {
+            "gj",
+            vim.diagnostic.goto_prev,
+            description = "Diagnostics go to previous",
+            opts =
+                opt
+        },
+        {
+            "gk",
+            vim.diagnostic.goto_next,
+            description = "Diagnostics go to next",
+            opts =
+                opt
+        },
         -- find files using Telescope command-line sugar.
         {
             "<leader>ff",
@@ -356,9 +386,35 @@ do
     vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", opt)
 end
 
+require("lsp-inlayhints").setup({
+    inlay_hints = {
+        parameter_hints = {
+            show = true,
+            prefix = "<- ",
+            separator = ", ",
+            remove_colon_start = true,
+            remove_colon_end = true,
+        },
+        type_hints = {
+            -- type and other hints
+            show = true,
+            prefix = "=> ",
+            separator = ", ",
+            remove_colon_start = true,
+            remove_colon_end = false,
+        },
+        -- highlight group
+        highlight = "LspInlayHintCustom",
+    },
+    debug_mode = true
+})
+
+vim.api.nvim_set_hl(0, "LspInlayHintCustom", { link = "Comment" })
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
+    require("lsp-inlayhints").on_attach(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -477,9 +533,6 @@ do
     })
 end
 
-require("mason").setup({})
-
-
 do
     local lsp_config = require("lspconfig")
     local mason_config = require("mason-lspconfig")
@@ -489,12 +542,20 @@ do
         on_attach = on_attach,
         capabilities = require("cmp_nvim_lsp").default_capabilities(),
     })
+    require("mason").setup({})
+
 
     -- Register a handler that will be called for each installed server when it's ready (i.e.
     -- when installation is finished or if the server is already installed).
-    for _, server in ipairs(mason_config.get_installed_servers()) do
-        if server == "rust_analyzer" then
+    require("mason-lspconfig").setup_handlers({
+        function(server_name)
+            require("lspconfig")[server_name].setup({})
+        end,
+        ["rust_analyzer"] = function()
             require("rust-tools").setup({
+                tools = {
+                    inlay_hints = { auto = false }
+                },
                 server = {
                     on_attach = on_attach,
                     capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -505,9 +566,13 @@ do
                     },
                 },
             })
-        elseif server == "hls" then
+        end,
+        ["hls"] = function()
             require("haskell-tools").setup({
                 hls = {
+                    tools = {
+                        inlay_hints = { auto = false }
+                    },
                     on_attach = function(client, buffnr)
                         local helpers = require("legendary.toolbox")
                         local opts = vim.tbl_extend("keep", opt, { buffer = buffnr })
@@ -526,8 +591,6 @@ do
                     capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 },
             })
-        else
-            lsp_config[server].setup({})
         end
-    end
+    })
 end
