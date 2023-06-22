@@ -1,7 +1,6 @@
 -- set up plugings etc.
 require("plugins").run({
-    callback = function ()
+    callback = function()
         require("config")
     end
 })
-
