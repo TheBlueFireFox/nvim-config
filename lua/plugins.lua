@@ -20,7 +20,14 @@ function packer:startup()
         use("simrat39/rust-tools.nvim")
 
         -- haskell super powers
-        use("MrcJkb/haskell-tools.nvim")
+        use({
+            "MrcJkb/haskell-tools.nvim",
+            requires = {
+                'nvim-lua/plenary.nvim',
+                'nvim-telescope/telescope.nvim', -- optional
+            },
+            branch = '1.x.x',        -- recommended
+        })
 
         -- usefull
         use("windwp/nvim-autopairs")
