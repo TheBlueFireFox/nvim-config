@@ -1,6 +1,2 @@
--- set up plugings etc.
-require("plugins").run({
-    callback = function()
-        require("config")
-    end
-})
+-- setup neovim 
+require("core")
