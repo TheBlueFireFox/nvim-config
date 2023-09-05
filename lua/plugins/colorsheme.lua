@@ -15,14 +15,18 @@ return {
     },
     {
         "folke/tokyonight.nvim",
-        lazy = false,
-        priority=10000,
         config = function()
             -- Example config in Lua
             vim.g.tokyonight_style = "night"
 
-            -- set color
-            vim.cmd("colorscheme tokyonight")
     end,
     },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        config = function()
+            -- set color
+            vim.cmd.colorscheme "catppuccin-mocha"
+        end
+    }
 }
