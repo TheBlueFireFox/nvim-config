@@ -7,7 +7,7 @@ return {
         dependencies = {
             "neovim/nvim-lspconfig",
         },
-        event = { "VeryLazy" },
+        event = { "VeryLazy", "BufReadPost", "BufNewFile" },
         opts = {},
         config = function()
             local lsp_config = require("lspconfig")
