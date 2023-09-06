@@ -1,8 +1,7 @@
 return {
     {
         "mrjones2014/legendary.nvim",
-        priority = 1000,
-        lazy = false,
+        priority = 10000,
         keys = function()
             local keys = {
                 -- general

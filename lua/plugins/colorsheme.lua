@@ -2,7 +2,8 @@ return {
     -- design
     {
         "sainnhe/gruvbox-material",
-        config = function()
+        lazy = true,
+        init = function()
             -- Available values: 'material', 'mix', 'original'
             vim.g.gruvbox_material_palette = "material"
 
@@ -15,16 +16,17 @@ return {
     },
     {
         "folke/tokyonight.nvim",
-        config = function()
+        lazy = true,
+        init = function()
             -- Example config in Lua
             vim.g.tokyonight_style = "night"
-
-    end,
+        end,
     },
     {
         "catppuccin/nvim",
+        lazy = true,
         name = "catppuccin",
-        config = function()
+        init = function()
             -- set color
             vim.cmd.colorscheme "catppuccin-mocha"
         end

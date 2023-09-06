@@ -1,7 +1,6 @@
 return {
     {
         "nvim-tree/nvim-tree.lua",
-        lazy = false,
         dependencies = {
             { "ryanoasis/vim-devicons" },
         },
@@ -22,7 +21,7 @@ return {
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
         end,
-        opts = function(_, popts)
+        opts = function()
             ---- Other configurations
 
             -- have Vim jump to the last position when reopening a file
@@ -39,7 +38,8 @@ return {
             --     pattern = "*",
             --     command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NvimTree') && b:NvimTree.isTabTree() | quit | endif ]],
             -- })
-            local opts = {
+
+            return {
                 sort_by = "case_sensitive",
                 renderer = {
                     group_empty = true,
@@ -53,7 +53,6 @@ return {
                     },
                 },
             }
-            return vim.tbl_extend("force", popts, opts)
         end,
     },
     {
@@ -65,17 +64,18 @@ return {
             { "nvim-telescope/telescope-symbols.nvim" },
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
-        config = function()
+        opts = {
             -- https://github.com/nvim-telescope/telescope.nvim#themes
             -- https://github.com/nvim-telescope/telescope.nvim#layout-display
             -- https://github.com/nvim-telescope/telescope.nvim#pickers
-            require("telescope").setup({
-                extensions = {
-                    ["ui-select"] = {
-                        require("telescope.themes").get_cursor({}),
-                    },
+            extensions = {
+                ["ui-select"] = {
+                    require("telescope.themes").get_cursor({}),
                 },
-            })
+            },
+        },
+        config = function(_, opts)
+            require("telescope").setup(opts)
 
             -- To get fzf loaded and working with telescope, you need to call
             -- load_extension, somewhere after setup function:
@@ -157,6 +157,7 @@ return {
     -- header and bottom
     {
         "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
         dependencies = {
             { "nvim-tree/nvim-web-devicons" },
         },
@@ -176,6 +177,7 @@ return {
     },
     {
         "akinsho/bufferline.nvim",
+        event = "VeryLazy",
         version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
         opts = {

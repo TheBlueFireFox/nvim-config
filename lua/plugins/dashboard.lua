@@ -5,7 +5,7 @@ return {
         dependencies = {
             { "nvim-tree/nvim-web-devicons" },
         },
-        config = function()
+        opts = function()
             local conf = require("alpha.themes.dashboard")
             local buttons = {
                 type = "group",
@@ -15,6 +15,7 @@ return {
                     conf.button(vim.g.mapleader .. "fh", "󰈢  Recently opened files"),
                     conf.button(vim.g.mapleader .. "fg", "󰈬  Live Grep"),
                     conf.button(vim.g.mapleader .. "sl", "󰁯  Open last session"),
+                    conf.button(vim.g.mapleader .. "sf", "󰁯  Open last folder session"),
                 },
                 opts = {
                     spacing = 1,
@@ -29,12 +30,12 @@ return {
                 conf.section.footer,
             }
 
-            require("alpha").setup(conf.config)
+            return conf.config
         end,
     },
     {
         "Shatur/neovim-session-manager",
-        lazy = false,
+        event = "VeryLazy",
         dependencies = {
             { "nvim-lua/plenary.nvim" },
         },
@@ -47,6 +48,11 @@ return {
                 "<leader>sl",
                 "<cmd>SessionManager load_last_session<CR>",
                 desc = "Open last session",
+            },
+            {
+                "<leader>sf",
+                "<cmd>SessionManager load_current_dir_session<CR>",
+                desc = "Open last folder session",
             },
         },
     },

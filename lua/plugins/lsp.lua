@@ -4,11 +4,13 @@ return {
     { "williamboman/mason.nvim" },
     {
         "williamboman/mason-lspconfig.nvim",
-        lazy = false,
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
         },
+        event = { "BufReadPost", "BufNewFile" },
+        cmd = { "LspInfo", "LspInstall", "LspUninstall" },
+        opts = {},
         config = function()
             local lsp_config = require("lspconfig")
             local mason_config = require("mason-lspconfig")
@@ -33,6 +35,7 @@ return {
     -- lsp inlay hints
     {
         "lvimuser/lsp-inlayhints.nvim",
+        event = { "BufReadPost", "BufNewFile" },
         opts = function()
             vim.api.nvim_set_hl(0, "LspInlayHintCustom", { link = "Comment" })
             vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
