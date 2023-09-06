@@ -57,6 +57,7 @@ return {
     },
     {
         "nvim-telescope/telescope.nvim",
+        event = "VeryLazy",
         dependencies = {
             { "nvim-lua/plenary.nvim" },
             { "stevearc/dressing.nvim" },
@@ -162,7 +163,6 @@ return {
             { "nvim-tree/nvim-web-devicons" },
         },
         opts = {
-
             options = {
                 theme = "auto",
             },
