@@ -91,11 +91,6 @@ return {
                     vim.lsp.buf.references,
                     desc = "List all references",
                 },
-                {
-                    "<leader>F",
-                    vim.lsp.buf.format,
-                    desc = "Format File with lsp",
-                },
             }
 
             -- special terminal one
