@@ -128,7 +128,7 @@ return {
             vim.g.haskell_tools = {
                 hls = {
                     tools = {
-                        inlay_hints = { auto = false },
+                        inlay_hints = { auto = true },
                     },
                     capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 },
