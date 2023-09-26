@@ -34,8 +34,8 @@ return {
                 {
                     "<leader>l",
                     function()
-                    require("legendary").find("keymaps")
-                end,
+                        require("legendary").find("keymaps")
+                    end,
                     desc = "Legendary: search keymaps",
                 },
                 {

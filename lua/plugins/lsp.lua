@@ -126,10 +126,10 @@ return {
         },
         init = function()
             vim.g.haskell_tools = {
+                tools = {
+                    codeLens = { autoRefresh = false },
+                },
                 hls = {
-                    tools = {
-                        inlay_hints = { auto = true },
-                    },
                     capabilities = require("cmp_nvim_lsp").default_capabilities(),
                 },
             }
