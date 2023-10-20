@@ -21,6 +21,7 @@ return {
     -- Formatting
     {
         "sbdchd/neoformat",
+        cmd = { "Neoformat" },
         keys = {
             {
                 "<leader>F",
