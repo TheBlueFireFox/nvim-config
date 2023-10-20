@@ -25,8 +25,10 @@ return {
                 function(server_name)
                     require("lspconfig")[server_name].setup({})
                 end,
-                ["rust_analyzer"] = nil,
-                ["hls"] = nil,
+                ["rust_analyzer"] = function()
+                end,
+                ["hls"] = function()
+                end
             })
         end,
     },
