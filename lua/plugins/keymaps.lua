@@ -91,6 +91,16 @@ return {
                     vim.lsp.buf.references,
                     desc = "List all references",
                 },
+                {
+                    "<C-k>",
+                    "<C-u>",
+                    desc = "Move half page up"
+                },
+                {
+                    "<C-j>",
+                    "<C-d>",
+                    desc = "Move half page down"
+                }
             }
 
             -- special terminal one
