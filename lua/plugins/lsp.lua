@@ -155,10 +155,19 @@ return {
                 showInferredType = true,
                 superMethodLensesEnabled = true,
             }
-            metals_config.init_options.statusBarProvider = "on"
+            -- metals_config.init_options.statusBarProvider = "on"
             metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
 
             require("metals").initialize_or_attach(metals_config)
-        end
+        end,
+        keys = {
+            {
+                "<leader>mc",
+                function()
+                    require("telescope").extensions.metals.commands()
+                end,
+                desc = "Metals Commands",
+            }
+        },
     },
 }
