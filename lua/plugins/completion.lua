@@ -14,7 +14,19 @@ return {
                 dependencies = {
                     { "nvim-lua/plenary.nvim" },
                 },
-            }
+            },
+            -- snippets
+            {
+                "onsails/lspkind-nvim",
+                dependencies = { "saadparwaiz1/cmp_luasnip" }
+            },
+            { "L3MON4D3/LuaSnip" },
+            --          { "rafamadriz/friendly-snippets" },
+            --          {
+            --              "ray-x/lsp_signature.nvim",
+            --              event = "VeryLazy",
+            --              opts = {}
+            --          },
         },
         config = function(_, opts)
             local cmp = require("cmp")
