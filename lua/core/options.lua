@@ -22,9 +22,6 @@ vim.opt.mouse = "a"
 -- fix leader
 vim.g.mapleader = ","
 
---  nvim-cmp
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
 -- force vim to use a single column for both number and error hightlighting
 vim.opt.signcolumn = "number"
 

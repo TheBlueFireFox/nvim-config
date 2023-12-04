@@ -57,6 +57,10 @@ return {
                     { { name = "cmdline" } }),
             })
         end,
+        init = function()
+            --  nvim-cmp
+            vim.opt.completeopt = { "menu", "menuone", "noselect" }
+        end,
         opts = function()
             -- Setup nvim-cmp.
             local cmp = require("cmp")
