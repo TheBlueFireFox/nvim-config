@@ -2,61 +2,28 @@ return {
     -- code completion
     {
         "hrsh7th/nvim-cmp",
-        event = "VeryLazy",
+        event = "InsertEnter",
         dependencies = {
             { "hrsh7th/cmp-nvim-lsp" },
             { "hrsh7th/cmp-buffer" },
             { "hrsh7th/cmp-path" },
             { "hrsh7th/cmp-cmdline" },
             { "hrsh7th/cmp-nvim-lua" },
-            {
-                "petertriho/cmp-git",
-                dependencies = {
-                    { "nvim-lua/plenary.nvim" },
-                },
-            },
             -- snippets
             {
                 "onsails/lspkind-nvim",
                 dependencies = { "saadparwaiz1/cmp_luasnip" }
             },
-            { "L3MON4D3/LuaSnip" },
-            --          { "rafamadriz/friendly-snippets" },
-            --          {
-            --              "ray-x/lsp_signature.nvim",
-            --              event = "VeryLazy",
-            --              opts = {}
-            --          },
+            {
+                "L3MON4D3/LuaSnip",
+                version = "v2.*",
+                build = "make install_jsregexp",
+                dependencies = { "rafamadriz/friendly-snippets" },
+                opts = function()
+                    require("luasnip.loaders.from_vscode").lazy_load()
+                end,
+            },
         },
-        config = function(_, opts)
-            local cmp = require("cmp")
-            cmp.setup(opts)
-
-            -- Set configuration for specific filetype.
-            cmp.setup.filetype("gitcommit", {
-                sources = cmp.config.sources({
-                    -- { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
-                }, {
-                    { name = "buffer" },
-                }),
-            })
-
-            -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-            cmp.setup.cmdline("/", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = {
-                    { name = "buffer" },
-                },
-            })
-
-            -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-            cmp.setup.cmdline(":", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources(
-                    { { name = "path" } },
-                    { { name = "cmdline" } }),
-            })
-        end,
         init = function()
             --  nvim-cmp
             vim.opt.completeopt = { "menu", "menuone", "noselect" }
@@ -111,6 +78,26 @@ return {
                     { name = "buffer" },
                 }),
             }
+        end,
+        config = function(_, opts)
+            local cmp = require("cmp")
+            cmp.setup(opts)
+
+            -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+            cmp.setup.cmdline("/", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = "buffer" },
+                },
+            })
+
+            -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources(
+                    { { name = "path" } },
+                    { { name = "cmdline" } }),
+            })
         end,
     },
 }
