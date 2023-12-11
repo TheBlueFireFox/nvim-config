@@ -1,13 +1,12 @@
 return {
     -- Collection of configurations for the built-in LSP client
-    { "neovim/nvim-lspconfig" },
-    { "williamboman/mason.nvim" },
     {
         "williamboman/mason-lspconfig.nvim",
         dependencies = {
-            "neovim/nvim-lspconfig",
+            { "neovim/nvim-lspconfig" },
+            { "williamboman/mason.nvim" },
         },
-        event = { "VeryLazy", "BufReadPost", "BufNewFile" },
+        event = { "VeryLazy" },
         opts = {},
         config = function()
             local lsp_config = require("lspconfig")
