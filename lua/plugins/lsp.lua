@@ -78,21 +78,8 @@ return {
 
     -- rust analyzer super powers
     {
-        "simrat39/rust-tools.nvim",
-        opts = {
-
-            tools = {
-                inlay_hints = { auto = false },
-            },
-            server = {
-                capabilities = require("cmp_nvim_lsp").default_capabilities(),
-                settings = {
-                    ["rust-analyzer"] = {
-                        inlayHints = { locationLinks = false },
-                    },
-                },
-            },
-        },
+        "mrcjkb/rustaceanvim",
+        version = "^3", -- Recommended
         ft = { "rust" },
     },
     {
