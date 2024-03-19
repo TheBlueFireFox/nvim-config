@@ -31,7 +31,7 @@ vim.opt.termguicolors = true
 -- allow for clipboard support on wsl
 if require("core.utils").is_wsl then
     -- WSL yank support
-    vim.opt.clipboard:append { 'unnamed', 'unnamedplus' }
+    -- vim.opt.clipboard:append { 'unnamed' }
     vim.g.clipboard = {
         name = 'win32yank-wsl',
         copy = {
