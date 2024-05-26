@@ -9,8 +9,11 @@ return {
             -- Available values: 'hard', 'medium'(default), 'soft'
             vim.g.gruvbox_material_background = "hard"
 
+            vim.g.gruvbox_material_enable_italic = false
+
             -- " For better performance
             vim.g.gruvbox_material_better_performance = 1
+            vim.cmd.colorscheme('gruvbox-material')
         end,
     },
     {
@@ -25,7 +28,7 @@ return {
         name = "catppuccin",
         init = function()
             -- set color
-            vim.cmd.colorscheme "catppuccin-mocha"
+            -- vim.cmd.colorscheme "catppuccin-mocha"
         end
     }
 }
