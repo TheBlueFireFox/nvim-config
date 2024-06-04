@@ -33,53 +33,18 @@ return {
     },
     -- lsp inlay hints
     {
-        "lvimuser/lsp-inlayhints.nvim",
-        event = { "BufReadPost", "BufNewFile" },
-        opts = function()
-            vim.api.nvim_set_hl(0, "LspInlayHintCustom", { link = "Comment" })
-            vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
-            vim.api.nvim_create_autocmd("LspAttach", {
-                group = "LspAttach_inlayhints",
-                callback = function(args)
-                    if not (args.data and args.data.client_id) then
-                        return
-                    end
-
-                    local bufnr = args.buf
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    require("lsp-inlayhints").on_attach(client, bufnr)
-                end,
-            })
-
-            return {
-                inlay_hints = {
-                    parameter_hints = {
-                        show = true,
-                        prefix = "<- ",
-                        separator = ", ",
-                        remove_colon_start = true,
-                        remove_colon_end = true,
-                    },
-                    type_hints = {
-                        -- type and other hints
-                        show = true,
-                        prefix = "=> ",
-                        separator = ", ",
-                        remove_colon_start = true,
-                        remove_colon_end = false,
-                    },
-                    -- highlight group
-                    highlight = "LspInlayHintCustom",
-                },
-                debug_mode = true,
-            }
-        end,
+        "MysticalDevil/inlay-hints.nvim",
+        event = "LspAttach",
+        dependencies = { "neovim/nvim-lspconfig" },
+        config = function()
+            require("inlay-hints").setup()
+        end
     },
 
     -- rust analyzer super powers
     {
         "mrcjkb/rustaceanvim",
-        version = "^3", -- Recommended
+        version = "^4", -- Recommended
         ft = { "rust" },
     },
     {
@@ -112,7 +77,7 @@ return {
                 optional = true,
             },
         },
-        version = "^2",
+        version = "^3",
         ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
     },
 }

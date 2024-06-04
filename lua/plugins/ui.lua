@@ -89,7 +89,6 @@ return {
         opts = {
             ensure_installed = {
                 "bash",
-                "bibtex",
                 "c",
                 "cmake",
                 "cpp",
@@ -110,6 +109,7 @@ return {
             },
             highlight = {
                 enable = true,
+                disable = { "latex" },
                 additional_vim_regex_highlighting = false,
             },
         },
@@ -170,7 +170,6 @@ return {
     {
         "akinsho/bufferline.nvim",
         event = "VeryLazy",
-        version = "*",
         dependencies = "nvim-tree/nvim-web-devicons",
         opts = {
             options = {
