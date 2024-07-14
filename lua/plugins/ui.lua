@@ -65,17 +65,26 @@ return {
             { "nvim-telescope/telescope-symbols.nvim" },
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
-        config = function()
-            -- https://github.com/nvim-telescope/telescope.nvim#themes
-            -- https://github.com/nvim-telescope/telescope.nvim#layout-display
-            -- https://github.com/nvim-telescope/telescope.nvim#pickers
-            local opts = {
+        opts = function()
+            return {
                 extensions = {
                     ["ui-select"] = {
                         require("telescope.themes").get_cursor({}),
                     },
                 },
+                defaults = {
+                    preview = {
+                        treesitter = {
+                            disable = { "tex" }
+                        }
+                    }
+                },
             }
+        end,
+        config = function(_, opts)
+            -- https://github.com/nvim-telescope/telescope.nvim#themes
+            -- https://github.com/nvim-telescope/telescope.nvim#layout-display
+            -- https://github.com/nvim-telescope/telescope.nvim#pickers
             require("telescope").setup(opts)
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("ui-select")
