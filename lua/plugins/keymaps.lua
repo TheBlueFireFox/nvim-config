@@ -94,12 +94,14 @@ return {
                 {
                     "<C-k>",
                     "<C-u>",
-                    desc = "Move half page up"
+                    desc = "Move half page up",
+                    mode = {"n", "v"}
                 },
                 {
                     "<C-j>",
                     "<C-d>",
-                    desc = "Move half page down"
+                    desc = "Move half page down",
+                    mode = {"n", "v"}
                 }
             }
 

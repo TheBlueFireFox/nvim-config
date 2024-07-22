@@ -63,7 +63,7 @@ return {
             { "stevearc/dressing.nvim" },
             { "nvim-telescope/telescope-ui-select.nvim" },
             { "nvim-telescope/telescope-symbols.nvim" },
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release" },
         },
         opts = function()
             return {
@@ -118,7 +118,7 @@ return {
             },
             highlight = {
                 enable = true,
-                disable = { "latex" },
+                disable = { "tex" },
                 additional_vim_regex_highlighting = false,
             },
         },
