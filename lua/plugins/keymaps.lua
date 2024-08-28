@@ -102,6 +102,14 @@ return {
                     "<C-d>",
                     desc = "Move half page down",
                     mode = {"n", "v"}
+                },
+                {
+                    "<leader>i",
+                    function()
+                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+                    end,
+                    desc = "Toggle inlay hints",
+                    mode = { "n" }
                 }
             }
 
