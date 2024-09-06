@@ -77,6 +77,11 @@ return {
                         treesitter = {
                             disable = { "tex" }
                         }
+                    },
+                    mappings = {
+                        n = {
+                            ['<C-d>'] = require('telescope.actions').delete_buffer,
+                        }
                     }
                 },
             }
