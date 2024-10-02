@@ -77,7 +77,7 @@ return {
                 optional = true,
             },
         },
-        version = "^3",
+        version = "^4",
         ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
     },
 }
