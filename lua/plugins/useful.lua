@@ -30,7 +30,7 @@ return {
                 function()
                     -- vim.lsp.buf.format,
                     -- "<cmd>Neoformat<cr>",
-                    for _, client in pairs(vim.lsp.get_active_clients()) do
+                    for _, client in pairs(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })) do
                         if client.server_capabilities.documentFormattingProvider then
                             vim.lsp.buf.format()
                             return
