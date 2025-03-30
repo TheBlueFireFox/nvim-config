@@ -152,26 +152,6 @@ return {
             },
         },
     },
-    -- header and bottom
-    {
-        "nvim-lualine/lualine.nvim",
-        event = "VeryLazy",
-        dependencies = {
-            { "nvim-tree/nvim-web-devicons" },
-        },
-        opts = {
-            options = {
-                theme = "auto",
-            },
-            sections = {
-                lualine_c = {
-                    "filename",
-                    "require('lsp-status').status()",
-                },
-            },
-            tabline = {},
-        },
-    },
     {
         "akinsho/bufferline.nvim",
         event = "VeryLazy",
@@ -199,38 +179,38 @@ return {
             },
         },
     },
+    -- header and bottom
     {
-        "nvim-lua/lsp-status.nvim",
-        config = function(_, _)
-            -- LSP-Status
-            local lsp_status = require("lsp-status")
-            -- completion_customize_lsp_label as used in completion-nvim
-            -- Optional: customize the kind labels used in identifying the current function.
-            -- g:completion_customize_lsp_label is a dict mapping from LSP symbol kind
-            -- to the string you want to display as a label
-            -- lsp_status.config { kind_labels = vim.g.completion_customize_lsp_label }
-
-            -- Register the progress handler
-            lsp_status.register_progress()
-
-            -- remove that dumb looking 'V'
-            lsp_status.config({
-                status_symbol = "",
-                diagnostics = false,
-            })
-
-            vim.api.nvim_create_augroup("LspAttach_lsp_status", {})
-            vim.api.nvim_create_autocmd("LspAttach", {
-                group = "LspAttach_lsp_status",
-                callback = function(args)
-                    if not (args.data and args.data.client_id) then
-                        return
-                    end
-
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    lsp_status.on_attach(client)
-                end,
-            })
-        end,
+        "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            { "nvim-tree/nvim-web-devicons" },
+        },
+        opts = {
+            options = {
+                theme = "auto",
+            },
+            sections = {
+                lualine_c = {
+                    "filename",
+                    function()
+                        -- invoke `progress` here.
+                        return require('lsp-progress').progress()
+                    end,
+                },
+            },
+        },
     },
+    {
+        'linrongbin16/lsp-progress.nvim',
+        opts = function()
+            -- listen lsp-progress event and refresh lualine
+            vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+            vim.api.nvim_create_autocmd("User", {
+                group = "lualine_augroup",
+                pattern = "LspProgressStatusUpdated",
+                callback = require("lualine").refresh,
+            })
+        end
+    }
 }
