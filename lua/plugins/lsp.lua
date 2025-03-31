@@ -40,7 +40,6 @@ return {
             require("inlay-hints").setup()
         end
     },
-
     -- rust analyzer super powers
     {
         "mrcjkb/rustaceanvim",
@@ -58,38 +57,5 @@ return {
                 end
             end
         end
-    },
-    {
-        "saecki/crates.nvim",
-        event = { "BufRead Cargo.toml" },
-        dependencies = {
-            { "nvim-lua/plenary.nvim" },
-        },
-        init = function()
-            -- Crates.nvim (rust helper)
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = "toml",
-                callback = function()
-                    require("cmp").setup.buffer({
-                        sources = {
-                            { name = "crates" },
-                        },
-                    })
-                end,
-            })
-        end,
-    },
-    -- haskell super powers
-    {
-        "mrcjkb/haskell-tools.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            {
-                "nvim-telescope/telescope.nvim",
-                optional = true,
-            },
-        },
-        version = "^4",
-        ft = { "haskell", "lhaskell", "cabal", "cabalproject" },
     },
 }

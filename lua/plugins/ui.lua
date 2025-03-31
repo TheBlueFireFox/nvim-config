@@ -26,18 +26,9 @@ return {
 
             -- have Vim jump to the last position when reopening a file
             -- TODO: change to lua
-            vim.api.nvim_create_autocmd(
-                "BufReadPost",
-                { command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]] }
-            )
-
-            -- TODO: get working
-            --- NvimTree
-            -- Exit Vim if NERDTree is the only window remaining in the only tab.
-            -- vim.api.nvim_create_autocmd("BufEnter", {
-            --     pattern = "*",
-            --     command = [[ if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NvimTree') && b:NvimTree.isTabTree() | quit | endif ]],
-            -- })
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]],
+            })
 
             return {
                 sort_by = "case_sensitive",
@@ -63,7 +54,10 @@ return {
             { "stevearc/dressing.nvim" },
             { "nvim-telescope/telescope-ui-select.nvim" },
             { "nvim-telescope/telescope-symbols.nvim" },
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release" },
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+            },
         },
         -- use <M-d> to remove selected buffers
         opts = function()
@@ -76,8 +70,8 @@ return {
                 defaults = {
                     preview = {
                         treesitter = {
-                            disable = { "tex" }
-                        }
+                            disable = { "tex" },
+                        },
                     },
                 },
             }
@@ -89,7 +83,7 @@ return {
             require("telescope").setup(opts)
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("ui-select")
-        end
+        end,
     },
     {
         "nvim-treesitter/nvim-treesitter",
@@ -117,7 +111,7 @@ return {
                 "vimdoc",
                 "yaml",
             },
-         },
+        },
         config = function(_, opts)
             require("nvim-treesitter.configs").setup(opts)
         end,
@@ -195,14 +189,14 @@ return {
                     "filename",
                     function()
                         -- invoke `progress` here.
-                        return require('lsp-progress').progress()
+                        return require("lsp-progress").progress()
                     end,
                 },
             },
         },
     },
     {
-        'linrongbin16/lsp-progress.nvim',
+        "linrongbin16/lsp-progress.nvim",
         opts = function()
             -- listen lsp-progress event and refresh lualine
             vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
@@ -211,6 +205,6 @@ return {
                 pattern = "LspProgressStatusUpdated",
                 callback = require("lualine").refresh,
             })
-        end
-    }
+        end,
+    },
 }

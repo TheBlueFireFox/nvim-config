@@ -2,7 +2,7 @@ return {
     -- design
     {
         "sainnhe/gruvbox-material",
-        lazy = false,
+        lazy = true,
         init = function()
             -- Available values: 'material', 'mix', 'original'
             vim.g.gruvbox_material_palette = "material"
@@ -19,7 +19,7 @@ return {
     },
     {
         "folke/tokyonight.nvim",
-        lazy = false,
+        lazy = true,
         init = function()
             -- Example config in Lua
             vim.g.tokyonight_style = "night"
@@ -72,6 +72,6 @@ return {
     },
     {
         "rafi/awesome-vim-colorschemes",
-        lazy = false,
+        lazy = true,
     }
 }
