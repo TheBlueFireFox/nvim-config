@@ -84,37 +84,6 @@ return {
             require("telescope").load_extension("fzf")
             require("telescope").load_extension("ui-select")
         end,
-    },
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        cmd = "TSUpdateSync",
-        event = { "BufReadPost", "BufNewFile" },
-        opts = {
-            ensure_installed = {
-                "bash",
-                "c",
-                "cmake",
-                "cpp",
-                "css",
-                "dockerfile",
-                "haskell",
-                "html",
-                "javascript",
-                "json",
-                "lua",
-                "make",
-                "query",
-                "rust",
-                "toml",
-                "vim",
-                "vimdoc",
-                "yaml",
-            },
-        },
-        config = function(_, opts)
-            require("nvim-treesitter.configs").setup(opts)
-        end,
         keys = {
             {
                 "<leader>ff",
@@ -145,6 +114,36 @@ return {
                 desc = "Telescope: Help Tags",
             },
         },
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        lazy = false,
+        opts = {
+            ensure_installed = {
+                "bash",
+                "c",
+                "cmake",
+                "cpp",
+                "css",
+                "dockerfile",
+                "haskell",
+                "html",
+                "javascript",
+                "json",
+                "lua",
+                "make",
+                "query",
+                "rust",
+                "toml",
+                "vim",
+                "vimdoc",
+                "yaml",
+            },
+        },
+        config = function(_, opts)
+            require("nvim-treesitter.configs").setup(opts)
+        end,
     },
     {
         "akinsho/bufferline.nvim",
