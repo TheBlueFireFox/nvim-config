@@ -113,6 +113,13 @@ return {
                 end,
                 desc = "Telescope: Help Tags",
             },
+            {
+                "<leader>fr",
+                function()
+                    require("telescope.builtin").lsp_references()
+                end,
+                desc = "Telescope: List Reference",
+            }
         },
     },
     {
