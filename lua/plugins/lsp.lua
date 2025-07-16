@@ -7,15 +7,18 @@ return {
             { "mason-org/mason.nvim", opts = {} },
         },
         lazy = false,
-        opts = {
-            ensure_installed = { "lua_ls", "vimls" },
-            automatic_enable = {
-                exclude = {
-                    "rust_analyzer",
-                    "hls"
+        opts = function()
+            return {
+                ensure_installed = { "lua_ls", "vimls" },
+                automatic_enable = {
+                    exclude = {
+                        "rust_analyzer",
+                        "hls",
+                    },
                 }
             }
-        },
+        end,
+        enabled = not require("core.utils").is_diff_mode,
     },
     -- lsp inlay hints
     {
@@ -25,19 +28,22 @@ return {
         config = function()
             require("inlay-hints").setup()
         end,
+        enabled = not require("core.utils").is_diff_mode,
     },
     -- rust analyzer super powers
     {
         "mrcjkb/rustaceanvim",
         version = "^6", -- Recommended
         ft = { "rust" },
+        enabled = not require("core.utils").is_diff_mode,
     },
     {
-        'saecki/crates.nvim',
-        tag = 'stable',
+        "saecki/crates.nvim",
+        tag = "stable",
         event = { "BufRead Cargo.toml" },
         config = function()
-            require('crates').setup()
+            require("crates").setup()
         end,
-    }
+        enabled = not require("core.utils").is_diff_mode,
+    },
 }
