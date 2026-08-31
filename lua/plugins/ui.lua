@@ -124,6 +124,7 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter",
+        branch = "main",
         build = ":TSUpdate",
         lazy = false,
         opts = {
@@ -149,7 +150,7 @@ return {
             },
         },
         config = function(_, opts)
-            require("nvim-treesitter.configs").setup(opts)
+            require("nvim-treesitter.config").setup(opts)
         end,
     },
     {
